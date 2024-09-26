@@ -14,17 +14,17 @@ const taskLists = {
 
 function updateContainers() {
     // Clear existing content
-    listContainer.innerHTML = '';
-    taskContainer.innerHTML = '';
+    listContainer.innerHTML = "";
+    taskContainer.innerHTML = "";
 
     // Populate listContainer
     for (const listName in taskLists) {
-        const listItem = document.createElement('div');
+        const listItem = document.createElement("div");
         listItem.textContent = listName;
-        listItem.classList.add('list-item', 'p-2', 'border', 'mb-2');
+        listItem.classList.add("list-item", "p-2", "border", "mb-2");
 
         // Highlight the current list
-        if (listName === currentList) listItem.classList.add('bg-primary', 'text-white');
+        if (listName === currentList) listItem.classList.add("bg-primary", "text-white");
 
         // Make list item clickable to switch to this task list
         listItem.onclick = () => {
@@ -38,20 +38,20 @@ function updateContainers() {
     // Populate taskContainer
     const tasks = taskLists[currentList];
     tasks.forEach((task, index) => {
-        const taskDiv = document.createElement('div');
-        taskDiv.classList.add('d-flex', 'align-items-center', 'p-2', 'border', 'mb-2', 'rounded');
+        const taskDiv = document.createElement("div");
+        taskDiv.classList.add("d-flex", "align-items-center", "p-2", "border", "mb-2", "rounded");
 
-        const checkbox = document.createElement('input');
-        checkbox.type = 'checkbox';
+        const checkbox = document.createElement("input");
+        checkbox.type = "checkbox";
         checkbox.checked = task.done;
-        checkbox.classList.add('mr-2');
+        checkbox.classList.add("mr-2");
         checkbox.onchange = () => {
             task.done = checkbox.checked;
         };
 
-        const taskContent = document.createElement('span');
+        const taskContent = document.createElement("span");
         taskContent.textContent = task.content;
-        taskContent.classList.add(task.done ? 'text-decoration-line-through' : '');
+        taskContent.classList.add(task.done ? "text-decoration-line-through" : "");
 
         taskDiv.appendChild(checkbox);
         taskDiv.appendChild(taskContent);
