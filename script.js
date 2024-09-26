@@ -22,6 +22,9 @@ function updateContainers() {
         const listItem = document.createElement("div");
         listItem.textContent = listName;
         listItem.classList.add("list-item", "p-2", "border", "mb-2");
+        // make the id of the listItem be.. uhh
+        // the list title or whatever "example task list name"
+        // but remove all the spaces
 
         // Highlight the current list
         if (listName === currentList) listItem.classList.add("bg-primary", "text-white");
