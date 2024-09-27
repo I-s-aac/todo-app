@@ -43,6 +43,10 @@ function updateContainers() {
         const listElement = document.createElement("h3");
         listElement.textContent = listName;
         listElement.style.textDecoration = taskLists[listName].done === true ? "line-through" : "none";
+        listElement.classList.add("bg-secondary", "p-1", "rounded");
+        if (currentList === listName) {
+            listElement.style.filter = "brightness(1.5)";
+        }
         listElement.onclick = () => {
             currentList = listName;
             updateContainers();
@@ -59,7 +63,10 @@ function updateContainers() {
     }
 
     // display tasks to page
-    if (taskLists[currentList]) {
+    if (taskLists[currentList] !== undefined) {
+        taskAdder.style.display = "inline-block";
+        document.querySelector(`label[for="taskAdder"]`).textContent = "";
+
         taskLists[currentList].tasks.forEach((task, index) => {
             const taskElement = document.createElement("div");
             taskElement.textContent = task.content;
@@ -79,6 +86,9 @@ function updateContainers() {
             taskElement.appendChild(removeButton);
             taskContainer.appendChild(taskElement);
         });
+    } else {
+        taskAdder.style.display = "none";
+        document.querySelector(`label[for="taskAdder"]`).textContent = "Create or select a list in order to add tasks";
     }
 }
 
