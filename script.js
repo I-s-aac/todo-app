@@ -40,7 +40,7 @@ function updateContainers() {
     // display lists to page
     for (const listName in taskLists) {
         checkListCompletion(listName);
-        const listElement = document.createElement("h3");
+        const listElement = document.createElement("h4");
         listElement.textContent = listName;
         listElement.style.textDecoration = taskLists[listName].done === true ? "line-through" : "none";
         listElement.classList.add("bg-secondary", "p-1", "rounded");
@@ -64,8 +64,8 @@ function updateContainers() {
 
     // display tasks to page
     if (taskLists[currentList] !== undefined) {
-        taskAdder.style.display = "inline-block";
-        document.querySelector(`label[for="taskAdder"]`).textContent = "";
+        // taskAdder.style.display = "inline-block";
+        // document.querySelector(`label[for="taskAdder"]`).textContent = "";
 
         taskLists[currentList].tasks.forEach((task, index) => {
             const taskElement = document.createElement("div");
@@ -87,8 +87,8 @@ function updateContainers() {
             taskContainer.appendChild(taskElement);
         });
     } else {
-        taskAdder.style.display = "none";
-        document.querySelector(`label[for="taskAdder"]`).textContent = "Create or select a list in order to add tasks";
+        // taskAdder.style.display = "none";
+        // document.querySelector(`label[for="taskAdder"]`).textContent = "Create or select a list in order to add tasks";
     }
 }
 
@@ -103,7 +103,7 @@ function addList() {
 }
 
 function addTask() {
-    const taskDescription = prompt("Enter the task description:");
+    const taskDescription = sanitizeInput(taskAdder.value);
     if (taskDescription && taskLists[currentList]) {
         taskLists[currentList].tasks.push({ content: taskDescription, done: false });
         updateContainers();
