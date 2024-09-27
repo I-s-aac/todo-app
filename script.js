@@ -2,6 +2,7 @@
 
 const listContainer = document.getElementById("listContainer");
 const taskContainer = document.getElementById("taskContainer");
+const listAdder = document.getElementById("listAdder");
 let currentList = "example list name";
 
 // tasks/lists are only removed if you click some button on the task/list, marking them as done will not remove them
@@ -17,14 +18,20 @@ const taskLists = {
     }
 }
 
+function createRemoveButton() {
+    const button = document.createElement("button");
+    button.classList.add("btn", "btn-secondary", "btn-close");
+    return button;
+}
+
 function updateContainers() {
     // Clear containers first
     listContainer.innerHTML = "";
     taskContainer.innerHTML = "";
-
+    
     // Populate lists
     for (const listName in taskLists) {
-        const listElement = document.createElement("div");
+        const listElement = document.createElement("h3");
         listElement.textContent = listName;
         listElement.style.textDecoration = taskLists[listName].done ? "line-through" : "none";
         listElement.onclick = () => {
@@ -32,8 +39,7 @@ function updateContainers() {
             updateContainers();
         };
 
-        const removeButton = document.createElement("button");
-        removeButton.textContent = "Remove";
+        const removeButton = createRemoveButton();
         removeButton.onclick = (e) => {
             e.stopPropagation(); // Prevent switching to this list when removing
             removeList(listName);
@@ -51,6 +57,7 @@ function updateContainers() {
             taskElement.style.textDecoration = task.done ? "line-through" : "none";
 
             const doneButton = document.createElement("button");
+            doneButton.classList.add("btn", "btn-sm", "btn-secondary");
             doneButton.textContent = "Mark Done";
             doneButton.onclick = () => {
                 task.done = !task.done;
@@ -59,6 +66,7 @@ function updateContainers() {
             };
 
             const removeButton = document.createElement("button");
+            removeButton.classList.add("btn", "btn-sm", "btn-secondary");
             removeButton.textContent = "Remove";
             removeButton.onclick = () => removeTask(index);
 
@@ -70,7 +78,7 @@ function updateContainers() {
 }
 
 function addList() {
-    const listName = prompt("Enter the name of the new list:");
+    const listName = sanitizeInput(listAdder.value);
     if (listName && !taskLists[listName]) {
         taskLists[listName] = { tasks: [], done: false };
         updateContainers();
@@ -112,6 +120,12 @@ function checkListCompletion(listName) {
         taskLists[listName].done = false;
     }
 }
+
+function sanitizeInput(input) {
+    // Allow only alphanumeric characters, basic punctuation, and whitespace
+    return input.replace(/[^a-zA-Z0-9 .,!?-]/g, "");
+}
+
 
 // Initial update to display the example data
 updateContainers();

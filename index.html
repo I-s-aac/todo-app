@@ -21,14 +21,13 @@
         </div>
         <div class="row">
             <div class="col">
-                <label for="listAdder">create a new list: </label>
-                <input type="text" class="col" id="listAdder" placeholder="List name..."></input>
+                <label for="listAdder">Create a new list: </label>
+                <input type="text" id="listAdder" placeholder="List name..."></input>
+                <button onclick="addList()">Add list</button>
             </div>
         </div>
         <div class="row">
-            <div class="col-12 col-md-4" id="listContainer">
-                <div id="examplelistname"></div>
-            </div>
+            <div class="col-12 col-md-4" id="listContainer"></div>
             <div class="col-12 col-md-8">
                 make the text content of taskAdder be "create list in order to add tasks" when no task selected
                 task container will just be empty ig
