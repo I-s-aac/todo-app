@@ -3,6 +3,7 @@
 const listContainer = document.getElementById("listContainer");
 const taskContainer = document.getElementById("taskContainer");
 const listAdder = document.getElementById("listAdder");
+const taskAdder = document.getElementById("taskAdder");
 let currentList = "example list name";
 
 // tasks/lists are only removed if you click some button on the task/list, marking them as done will not remove them
@@ -20,20 +21,28 @@ const taskLists = {
 
 function createRemoveButton() {
     const button = document.createElement("button");
-    button.classList.add("btn", "btn-secondary", "btn-close");
+    button.classList.add("btn", "btn-secondary", "btn-close", "ms-3");
     return button;
 }
 
+function createDoneButton() {
+    const button = document.createElement("button");
+    button.classList.add("btn", "btn-secondary", "btn-sm", "btn-toggle", "ms-3");
+    button.innerText = "Mark Complete";
+    return button
+}
+
 function updateContainers() {
-    // Clear containers first
+    // clear containers
     listContainer.innerHTML = "";
     taskContainer.innerHTML = "";
-    
-    // Populate lists
+
+    // display lists to page
     for (const listName in taskLists) {
+        checkListCompletion(listName);
         const listElement = document.createElement("h3");
         listElement.textContent = listName;
-        listElement.style.textDecoration = taskLists[listName].done ? "line-through" : "none";
+        listElement.style.textDecoration = taskLists[listName].done === true ? "line-through" : "none";
         listElement.onclick = () => {
             currentList = listName;
             updateContainers();
@@ -49,25 +58,21 @@ function updateContainers() {
         listContainer.appendChild(listElement);
     }
 
-    // Populate tasks of the current list
+    // display tasks to page
     if (taskLists[currentList]) {
         taskLists[currentList].tasks.forEach((task, index) => {
             const taskElement = document.createElement("div");
             taskElement.textContent = task.content;
             taskElement.style.textDecoration = task.done ? "line-through" : "none";
+            taskElement.classList.add("mt-3");
 
-            const doneButton = document.createElement("button");
-            doneButton.classList.add("btn", "btn-sm", "btn-secondary");
-            doneButton.textContent = "Mark Done";
+            const doneButton = createDoneButton();
             doneButton.onclick = () => {
                 task.done = !task.done;
                 updateContainers();
-                checkListCompletion(currentList);
             };
 
-            const removeButton = document.createElement("button");
-            removeButton.classList.add("btn", "btn-sm", "btn-secondary");
-            removeButton.textContent = "Remove";
+            const removeButton = createRemoveButton();
             removeButton.onclick = () => removeTask(index);
 
             taskElement.appendChild(doneButton);
@@ -98,26 +103,24 @@ function addTask() {
 }
 
 function removeList(listName) {
-    if (confirm(`Are you sure you want to remove the list "${listName}"?`)) {
-        delete taskLists[listName];
-        if (currentList === listName) currentList = Object.keys(taskLists)[0] || "example list name";
-        updateContainers();
-    }
+    delete taskLists[listName];
+    if (currentList === listName) currentList = Object.keys(taskLists)[0] || "";
+    updateContainers();
 }
 
 function removeTask(index) {
-    if (confirm("Are you sure you want to remove this task?")) {
-        taskLists[currentList].tasks.splice(index, 1);
-        checkListCompletion(currentList);
-        updateContainers();
-    }
+    taskLists[currentList].tasks.splice(index, 1);
+    checkListCompletion(currentList);
+    updateContainers();
 }
 
 function checkListCompletion(listName) {
-    if (taskLists[listName].tasks.every(task => task.done)) {
-        taskLists[listName].done = true;
-    } else {
-        taskLists[listName].done = false;
+    if (taskLists[listName].tasks.length > 0) {
+        if (taskLists[listName].tasks.every(task => task.done === true)) {
+            taskLists[listName].done = true;
+        } else {
+            taskLists[listName].done = false;
+        }
     }
 }
 
