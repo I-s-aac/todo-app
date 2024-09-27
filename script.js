@@ -6,7 +6,6 @@ const listAdder = document.getElementById("listAdder");
 const taskAdder = document.getElementById("taskAdder");
 let currentList = "example list name";
 
-// tasks/lists are only removed if you click some button on the task/list, marking them as done will not remove them
 const taskLists = {
     "example list name": {
         "tasks": [
@@ -15,7 +14,7 @@ const taskLists = {
                 "done": false
             }
         ],
-        "done": false // if all the tasks within are cleared, use strikethrough on the list
+        "done": false
     }
 }
 
@@ -41,16 +40,30 @@ function updateContainers() {
     for (const listName in taskLists) {
         checkListCompletion(listName);
         const listElement = document.createElement("h4");
+
+        const defaultBrightness = currentList === listName ? 1.4 : 1;
+        const hoverBrightness = currentList === listName ? 1.4 : 1.2;
+
         listElement.textContent = listName;
         listElement.style.textDecoration = taskLists[listName].done === true ? "line-through" : "none";
         listElement.classList.add("bg-secondary", "p-1", "rounded");
+        listElement.style.transition = ".25s";
+
         if (currentList === listName) {
-            listElement.style.filter = "brightness(1.5)";
+            listElement.style.filter = "brightness(1.4)";
         }
+
         listElement.onclick = () => {
             currentList = listName;
             updateContainers();
         };
+
+        listElement.onmouseenter = () => {
+            listElement.style.filter = `brightness(${hoverBrightness})`;
+        }
+        listElement.onmouseleave = () => {
+            listElement.style.filter = `brightness(${defaultBrightness})`;
+        }
 
         const removeButton = createRemoveButton();
         removeButton.onclick = (e) => {
@@ -64,8 +77,6 @@ function updateContainers() {
 
     // display tasks to page
     if (taskLists[currentList] !== undefined) {
-        // taskAdder.style.display = "inline-block";
-        // document.querySelector(`label[for="taskAdder"]`).textContent = "";
 
         taskLists[currentList].tasks.forEach((task, index) => {
             const taskElement = document.createElement("div");
@@ -86,9 +97,6 @@ function updateContainers() {
             taskElement.appendChild(removeButton);
             taskContainer.appendChild(taskElement);
         });
-    } else {
-        // taskAdder.style.display = "none";
-        // document.querySelector(`label[for="taskAdder"]`).textContent = "Create or select a list in order to add tasks";
     }
 }
 
