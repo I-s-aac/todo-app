@@ -4,7 +4,20 @@ const listContainer = document.getElementById("listContainer");
 const taskContainer = document.getElementById("taskContainer");
 const listAdder = document.getElementById("listAdder");
 const taskAdder = document.getElementById("taskAdder");
+const listAdderWarning = document.getElementById("listAdderWarning");
+listAdderWarning.style.display = "none";
 let currentList = "example list name";
+
+
+listAdder.addEventListener("input", (event) => {
+    if (checkForValidList(sanitizeInput(listAdder.value))) {
+        listAdderWarning.style.display = "none";
+        listAdder.setAttribute("aria-invalid", false);
+    } else {
+        listAdderWarning.style.display = "block";
+        listAdder.setAttribute("aria-invalid", true);
+    }
+})
 
 const taskLists = {
     "example list name": {
@@ -28,7 +41,7 @@ function createDoneButton() {
     const button = document.createElement("button");
     button.classList.add("btn", "btn-secondary", "btn-sm", "btn-toggle", "ms-3");
     button.innerText = "Mark Complete";
-    return button
+    return button;
 }
 
 function updateContainers() {
@@ -100,13 +113,16 @@ function updateContainers() {
     }
 }
 
+function checkForValidList(listName) {
+    return (listName && !taskLists[listName]);
+}
+
 function addList() {
     const listName = sanitizeInput(listAdder.value);
-    if (listName && !taskLists[listName]) {
+    if (checkForValidList(listName)) {
         taskLists[listName] = { tasks: [], done: false };
+        listAdder.value = "";
         updateContainers();
-    } else {
-        alert("Invalid or duplicate list name!");
     }
 }
 
