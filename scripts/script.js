@@ -1,23 +1,19 @@
 "use strict";
 
-const listContainer = document.getElementById("listContainer");
-const taskContainer = document.getElementById("taskContainer");
-const listAdder = document.getElementById("listAdder");
-const taskAdder = document.getElementById("taskAdder");
-const listAdderWarning = document.getElementById("listAdderWarning");
-listAdderWarning.style.display = "none";
-let currentList = "example list name";
+import {
+    // html elements
+    listContainer,
+    taskContainer,
+    listAdder,
+    taskAdder,
+    listAdderWarning,
+    addTaskButton,
+    addListButton,
+    // functions
+    createDoneButton,
+    createRemoveButton
+} from "./htmlElements.js";
 
-
-listAdder.addEventListener("input", (event) => {
-    if (checkForValidList(sanitizeInput(listAdder.value))) {
-        listAdderWarning.style.display = "none";
-        listAdder.setAttribute("aria-invalid", false);
-    } else {
-        listAdderWarning.style.display = "block";
-        listAdder.setAttribute("aria-invalid", true);
-    }
-})
 
 const taskLists = {
     "example list name": {
@@ -30,19 +26,39 @@ const taskLists = {
         "done": false
     }
 }
+let currentList = "example list name";
 
-function createRemoveButton() {
-    const button = document.createElement("button");
-    button.classList.add("btn", "btn-secondary", "btn-close", "ms-3");
-    return button;
-}
 
-function createDoneButton() {
-    const button = document.createElement("button");
-    button.classList.add("btn", "btn-secondary", "btn-sm", "btn-toggle", "ms-3");
-    button.innerText = "Mark Complete";
-    return button;
-}
+listAdderWarning.style.display = "none";
+
+addListButton.addEventListener("click", (event) => {
+    addList();
+})
+
+addTaskButton.addEventListener("click", (event) => {
+    addTask();
+})
+
+
+listAdder.addEventListener("input", (event) => {
+    if (checkForValidList(sanitizeInput(listAdder.value))) {
+        listAdderWarning.style.display = "none";
+        listAdder.setAttribute("aria-invalid", false);
+    } else {
+        listAdderWarning.style.display = "block";
+        listAdder.setAttribute("aria-invalid", true);
+    }
+})
+
+listAdder.addEventListener("blur", (event) => {
+    if (listAdder.value === "") {
+        listAdderWarning.style.display = "none";
+        listAdder.setAttribute("aria-invalid", false);
+    }
+})
+
+
+
 
 function updateContainers() {
     // clear containers

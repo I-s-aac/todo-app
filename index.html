@@ -12,7 +12,7 @@
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 
     <link rel="stylesheet" href="style.css">
-    <script defer src="script.js"></script>
+    <script type="module" src="./scripts/script.js"></script>
 </head>
 
 <body>
@@ -32,7 +32,7 @@
                         <input type="text" id="listAdder" aria-describedby="listAdderWarning" placeholder="List name..."
                             autocomplete="off"></input>
                         <div id="listAdderWarning" role="alert">invalid list</div>
-                        <button onclick="addList()">Add list</button>
+                        <button id="addListButton">Add list</button>
                     </div>
                 </div>
 
@@ -47,7 +47,7 @@
                         <label for="taskAdder">Add a task</label>
                         <input type="text" id="taskAdder" name="taskAdder" placeholder="Task name..."
                             autocomplete="off"></input>
-                        <button onclick="addTask()">Add task</button>
+                        <button id="addTaskButton">Add task</button>
                     </div>
                 </div>
 
