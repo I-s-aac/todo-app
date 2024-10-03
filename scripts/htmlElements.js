@@ -6,14 +6,32 @@ export const listAdderWarning = document.getElementById("listAdderWarning");
 export const addTaskButton = document.getElementById("addTaskButton");
 export const addListButton = document.getElementById("addListButton");
 
-export function createRemoveButton() {
+function baseButton() {
     const button = document.createElement("button");
-    button.classList.add("btn", "btn-secondary", "btn-close", "ms-3");
+    button.classList.add("btn", "btn-secondary", "btn-sm");
+
+    return button;
+}
+
+export function createRemoveButton(action) {
+    const button = baseButton();
+    button.classList.add("btn-close", "ms-3");
+    button.classList.remove("btn-sm");
+    button.addEventListener("click", action);
+
     return button;
 }
 export function createDoneButton() {
-    const button = document.createElement("button");
-    button.classList.add("btn", "btn-secondary", "btn-sm", "btn-toggle", "ms-3");
+    const button = baseButton();
+    button.classList.add("btn-toggle", "ms-3");
     button.innerText = "Mark Complete";
+
+    return button;
+}
+export function createEditButton(action) {
+    const button = baseButton();
+    button.innerText = "Edit";
+    button.addEventListener("click", action);
+
     return button;
 }

@@ -11,7 +11,8 @@ import {
     addListButton,
     // functions
     createDoneButton,
-    createRemoveButton
+    createRemoveButton,
+    createEditButton
 } from "./htmlElements.js";
 
 
@@ -67,40 +68,63 @@ function updateContainers() {
 
     // display lists to page
     for (const listName in taskLists) {
+
         checkListCompletion(listName);
-        const listElement = document.createElement("h4");
+        const listElement = document.createElement("div");
+        const listTitle = document.createElement("h3");
 
-        const defaultBrightness = currentList === listName ? 1.4 : 1;
-        const hoverBrightness = currentList === listName ? 1.4 : 1.2;
+        const editButton = createEditButton((event) => {
+            if (editButton.innerText === "Edit") {
+                // do editing stuff
+            } else if (editButton.innerText === "Save") {
+                // do saving stuff
+            }
+        });
 
-        listElement.textContent = listName;
-        listElement.style.textDecoration = taskLists[listName].done === true ? "line-through" : "none";
-        listElement.classList.add("bg-secondary", "p-1", "rounded");
-        listElement.style.transition = ".25s";
+        const removeButton = createRemoveButton((event) => {
+            event.stopPropagation(); // prevent switching to this list
+            removeList(listName);
+        });
 
-        if (currentList === listName) {
-            listElement.style.filter = "brightness(1.4)";
+
+        function addStyling() {
+            const defaultBrightness = currentList === listName ? 1.4 : 1;
+            const hoverBrightness = currentList === listName ? 1.4 : 1.2;
+
+            listTitle.textContent = listName;
+            listTitle.style.textDecoration = taskLists[listName].done === true ? "line-through" : "none";
+            listElement.classList.add(
+                "bg-secondary", "p-1", "rounded",
+                "d-flex", "justify-content-center", "align-items-center"
+            );
+            listElement.style.transition = ".25s";
+
+            if (currentList === listName) {
+                listElement.style.filter = "brightness(1.4)";
+            }
+            listElement.onmouseenter = () => {
+                listElement.style.filter = `brightness(${hoverBrightness})`;
+            }
+            listElement.onmouseleave = () => {
+                listElement.style.filter = `brightness(${defaultBrightness})`;
+            }
         }
+        addStyling();
+
 
         listElement.onclick = () => {
-            currentList = listName;
-            updateContainers();
+            if (currentList !== listName) {
+                currentList = listName;
+                updateContainers();
+            }
         };
 
-        listElement.onmouseenter = () => {
-            listElement.style.filter = `brightness(${hoverBrightness})`;
-        }
-        listElement.onmouseleave = () => {
-            listElement.style.filter = `brightness(${defaultBrightness})`;
-        }
 
-        const removeButton = createRemoveButton();
-        removeButton.onclick = (e) => {
-            e.stopPropagation(); // Prevent switching to this list when removing
-            removeList(listName);
-        };
 
+        listElement.appendChild(listTitle);
+        listElement.appendChild(editButton);
         listElement.appendChild(removeButton);
+
         listContainer.appendChild(listElement);
     }
 
