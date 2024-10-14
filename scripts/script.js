@@ -15,22 +15,23 @@ import {
     createEditButton
 } from "./htmlElements.js";
 
+const taskLists = JSON.parse(localStorage.getItem("userList")) ?? [];
+// const taskLists = [
+//     {
+//         "name": "example list name", // also the title of the list
+//         "tasks": [
+//             {
+//                 "content": "string which is a description of a task",
+//                 "done": false
+//             }
+//         ],
+//         "done": false
+//     }
+// ]
 
-const taskLists = {
-    "example list name": {
-        "tasks": [
-            {
-                "content": "string which is a description of a task",
-                "done": false
-            }
-        ],
-        "done": false
-    }
-}
-let currentList = "example list name";
+let currentListIndex = 0; // index representing currently selected
 
 
-listAdderWarning.style.display = "none";
 
 addListButton.addEventListener("click", (event) => {
     addList();
@@ -40,9 +41,10 @@ addTaskButton.addEventListener("click", (event) => {
     addTask();
 })
 
+listAdderWarning.style.display = "none";
 
 listAdder.addEventListener("input", (event) => {
-    if (checkForValidList(sanitizeInput(listAdder.value))) {
+    if (!listExists(sanitizeInput(listAdder.value))) {
         listAdderWarning.style.display = "none";
         listAdder.setAttribute("aria-invalid", false);
     } else {
@@ -67,41 +69,76 @@ function updateContainers() {
     taskContainer.innerHTML = "";
 
     // display lists to page
-    for (const listName in taskLists) {
+    for (const list of taskLists) {
 
-        checkListCompletion(listName);
+        checkListCompletion(list);
         const listElement = document.createElement("div");
+        const listElementRight = document.createElement("div");
         const listTitle = document.createElement("h3");
+        const dragHandle = document.createElement("span");
+
+        const editInput = document.createElement("input");
 
         const editButton = createEditButton((event) => {
             if (editButton.innerText === "Edit") {
-                // do editing stuff
+
+                editInput.style.display = "inline-block";
+                listTitle.style.display = "none";
+
+
+                editButton.innerText = "Save";
             } else if (editButton.innerText === "Save") {
-                // do saving stuff
+
+                let listName = sanitizeInput(editInput.value);
+                let foundList = listExists(listName);
+
+                if (!foundList && listName !== "") {
+                    list.name = listName;
+                    updateContainers();
+                }
+                editInput.style.display = "none";
+                listTitle.style.display = "inline-block";
+                editButton.innerText = "Edit";
             }
         });
 
         const removeButton = createRemoveButton((event) => {
             event.stopPropagation(); // prevent switching to this list
-            removeList(listName);
+            removeList(list);
         });
 
 
         function addStyling() {
-            const defaultBrightness = currentList === listName ? 1.4 : 1;
-            const hoverBrightness = currentList === listName ? 1.4 : 1.2;
+            const defaultBrightness = taskLists[currentListIndex] === list ? 1.4 : 1;
+            const hoverBrightness = taskLists[currentListIndex] === list ? 1.4 : 1.2;
 
-            listTitle.textContent = listName;
-            listTitle.style.textDecoration = taskLists[listName].done === true ? "line-through" : "none";
+            editButton.style.display = "none";
+            editButton.classList.add("text-dark");
+            
+            editInput.style.display = "none";
+            editInput.placeholder = list.name;
+            editInput.style.width = "100%"
+
+            dragHandle.classList.add("bi", "bi-grip-vertical", "fs-2");
+
+            listTitle.textContent = list.name;
+            listTitle.style.textDecoration = list.done ? "line-through" : "none";
+
             listElement.classList.add(
                 "bg-secondary", "p-1", "rounded",
-                "d-flex", "justify-content-center", "align-items-center"
+                "d-flex", "justify-content-between",
+                "align-items-center", "mb-3"
             );
+            listElementRight.classList.add(
+                "d-flex", "align-items-center"
+            )
             listElement.style.transition = ".25s";
 
-            if (currentList === listName) {
+            if (taskLists[currentListIndex] === list) {
                 listElement.style.filter = "brightness(1.4)";
+                editButton.style.display = "inline-block";
             }
+
             listElement.onmouseenter = () => {
                 listElement.style.filter = `brightness(${hoverBrightness})`;
             }
@@ -113,26 +150,32 @@ function updateContainers() {
 
 
         listElement.onclick = () => {
-            if (currentList !== listName) {
-                currentList = listName;
+            if (taskLists[currentListIndex] !== list) {
+                currentListIndex = taskLists.indexOf(list);
+                console.log(currentListIndex);
                 updateContainers();
             }
         };
 
 
-
+        listElement.appendChild(dragHandle);
         listElement.appendChild(listTitle);
-        listElement.appendChild(editButton);
-        listElement.appendChild(removeButton);
+        listElement.appendChild(editInput);
+
+        listElementRight.appendChild(editButton);
+        listElementRight.appendChild(removeButton);
+
+        listElement.appendChild(listElementRight);
 
         listContainer.appendChild(listElement);
     }
 
     // display tasks to page
-    if (taskLists[currentList] !== undefined) {
+    if (taskLists[currentListIndex] !== undefined) {
 
-        taskLists[currentList].tasks.forEach((task, index) => {
+        taskLists[currentListIndex].tasks.forEach((task, index) => {
             const taskElement = document.createElement("div");
+
             taskElement.textContent = task.content;
             taskElement.style.textDecoration = task.done ? "line-through" : "none";
             taskElement.classList.add("mt-3");
@@ -151,16 +194,23 @@ function updateContainers() {
             taskContainer.appendChild(taskElement);
         });
     }
+
+    localStorage.setItem("userList", JSON.stringify(taskLists));
 }
 
-function checkForValidList(listName) {
-    return (listName && !taskLists[listName]);
+function listExists(listName) {
+    for (const list of taskLists) {
+        if (list.name === listName) {
+            return true;
+        }
+    }
+    return false;
 }
 
 function addList() {
     const listName = sanitizeInput(listAdder.value);
-    if (checkForValidList(listName)) {
-        taskLists[listName] = { tasks: [], done: false };
+    if (!listExists(listName) && listName !== "") {
+        taskLists.push({ name: listName, tasks: [], done: false });
         listAdder.value = "";
         updateContainers();
     }
@@ -168,32 +218,32 @@ function addList() {
 
 function addTask() {
     const taskDescription = sanitizeInput(taskAdder.value);
-    if (taskDescription && taskLists[currentList]) {
-        taskLists[currentList].tasks.push({ content: taskDescription, done: false });
+    if (taskDescription && taskLists[currentListIndex]) {
+        taskLists[currentListIndex].tasks.push({ content: taskDescription, done: false });
         updateContainers();
     } else {
         alert("Invalid task description or list does not exist!");
     }
 }
 
-function removeList(listName) {
-    delete taskLists[listName];
-    if (currentList === listName) currentList = Object.keys(taskLists)[0] || "";
+function removeList(list) {
+    if (currentListIndex === taskLists.indexOf(list)) currentListIndex = 0;
+    taskLists.splice(taskLists.indexOf(list), 1);
     updateContainers();
 }
 
 function removeTask(index) {
-    taskLists[currentList].tasks.splice(index, 1);
-    checkListCompletion(currentList);
+    taskLists[currentListIndex].tasks.splice(index, 1);
+    checkListCompletion(taskLists[currentListIndex]);
     updateContainers();
 }
 
-function checkListCompletion(listName) {
-    if (taskLists[listName].tasks.length > 0) {
-        if (taskLists[listName].tasks.every(task => task.done === true)) {
-            taskLists[listName].done = true;
+function checkListCompletion(list) {
+    if (list.tasks.length > 0) {
+        if (list.tasks.every(task => task.done === true)) {
+            list.done = true;
         } else {
-            taskLists[listName].done = false;
+            list.done = false;
         }
     }
 }
