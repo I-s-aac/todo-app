@@ -114,7 +114,7 @@ function updateContainers() {
 
             editButton.style.display = "none";
             editButton.classList.add("text-dark");
-            
+
             editInput.style.display = "none";
             editInput.placeholder = list.name;
             editInput.style.width = "100%"
@@ -175,10 +175,42 @@ function updateContainers() {
 
         taskLists[currentListIndex].tasks.forEach((task, index) => {
             const taskElement = document.createElement("div");
+            const taskText = document.createElement("span");
 
-            taskElement.textContent = task.content;
-            taskElement.style.textDecoration = task.done ? "line-through" : "none";
-            taskElement.classList.add("mt-3");
+            taskText.textContent = task.content;
+            taskText.style.textDecoration = task.done ? "line-through" : "none";
+
+            taskElement.classList.add("mt-3", "rounded");
+            taskElement.style.width = "100%";
+            taskElement.style.backgroundColor = "#c6c6c6";
+
+            const editInput = document.createElement("input");
+            editInput.style.display = "none";
+            editInput.style.width = "75%";
+
+            const editButton = createEditButton((event) => {
+                if (editButton.innerText === "Edit") {
+
+                    editInput.style.display = "inline-block";
+                    taskText.style.display = "none";
+                    editInput.placeholder = taskText.innerText;
+
+
+                    editButton.innerText = "Save";
+                } else if (editButton.innerText === "Save") {
+
+                    let newText = sanitizeInput(editInput.value);
+
+                    if (newText !== "") {
+                        task.content = newText;
+                        updateContainers();
+                    }
+
+                    editInput.style.display = "none";
+                    taskText.style.display = "inline-block";
+                    editButton.innerText = "Edit";
+                }
+            });
 
             const doneButton = createDoneButton();
             doneButton.onclick = () => {
@@ -189,8 +221,19 @@ function updateContainers() {
             const removeButton = createRemoveButton();
             removeButton.onclick = () => removeTask(index);
 
-            taskElement.appendChild(doneButton);
-            taskElement.appendChild(removeButton);
+            doneButton.classList.add("me-1");
+
+            const div = document.createElement("div");
+
+            div.classList.add("d-flex", "justify-content-center", "align-items-center")
+
+            div.appendChild(doneButton);
+            div.appendChild(editButton);
+            div.appendChild(removeButton);
+            taskElement.appendChild(taskText);
+            taskElement.appendChild(editInput);
+            taskElement.appendChild(div);
+
             taskContainer.appendChild(taskElement);
         });
     }
