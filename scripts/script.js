@@ -12,10 +12,12 @@ import {
     // functions
     createDoneButton,
     createRemoveButton,
-    createEditButton
+    createEditButton,
+    createDragHandle
 } from "./htmlElements.js";
 
 const taskLists = JSON.parse(localStorage.getItem("userList")) ?? [];
+// format of lists
 // const taskLists = [
 //     {
 //         "name": "example list name", // also the title of the list
@@ -30,7 +32,12 @@ const taskLists = JSON.parse(localStorage.getItem("userList")) ?? [];
 // ]
 
 let currentListIndex = 0; // index representing currently selected
-
+let currentDragItem = null;
+let currentDragImage = document.createElement("div");
+currentDragImage.style.opacity = 0.75;
+currentDragImage.style.position = "absolute";
+currentDragImage.style.display = "none";
+document.body.appendChild(currentDragImage);
 
 
 addListButton.addEventListener("click", (event) => {
@@ -75,7 +82,46 @@ function updateContainers() {
         const listElement = document.createElement("div");
         const listElementRight = document.createElement("div");
         const listTitle = document.createElement("h3");
-        const dragHandle = document.createElement("span");
+
+
+        listElement.addEventListener("dragover", (event) => {
+
+            event.preventDefault();
+        });
+
+        listElement.addEventListener("drop", (event) => {
+
+            event.preventDefault();
+        });
+
+        const dragHandle = createDragHandle();
+
+        // unfinished, doesn't work atm
+        dragHandle.addEventListener("dragstart", (event) => {
+            currentDragItem = list;
+
+            html2canvas(listElement).then((canvas) => {
+                const dragImage = canvas;
+                currentDragImage.innerHTML = "";
+                currentDragImage.style.display = "block";
+                currentDragImage.appendChild(dragImage);
+            }).catch((error) => {
+                console.error('Error generating drag image:', error);
+            });
+        });
+
+        dragHandle.addEventListener("drag", (event) => {
+            if (currentDragItem !== null) {
+                currentDragImage.style.top = `${event.clientY}px`;
+            }
+        });
+
+        dragHandle.addEventListener("dragend", (event) => {
+            currentDragItem = null;
+            currentDragImage.style.display = "none"
+        });
+
+
 
         const editInput = document.createElement("input");
 
@@ -116,7 +162,7 @@ function updateContainers() {
             editButton.classList.add("text-dark");
 
             editInput.style.display = "none";
-            editInput.placeholder = list.name;
+            editInput.value = list.name;
             editInput.style.width = "100%"
 
             dragHandle.classList.add("bi", "bi-grip-vertical", "fs-2");
@@ -184,7 +230,7 @@ function updateContainers() {
             taskElement.style.width = "100%";
             taskElement.style.backgroundColor = "#c6c6c6";
 
-            const editInput = document.createElement("input");
+            const editInput = document.createElement("textarea");
             editInput.style.display = "none";
             editInput.style.width = "75%";
 
@@ -193,7 +239,7 @@ function updateContainers() {
 
                     editInput.style.display = "inline-block";
                     taskText.style.display = "none";
-                    editInput.placeholder = taskText.innerText;
+                    editInput.value = taskText.innerText;
 
 
                     editButton.innerText = "Save";

@@ -35,3 +35,11 @@ export function createEditButton(action) {
 
     return button;
 }
+
+export function createDragHandle() {
+    const dragHandle = document.createElement("span");
+    dragHandle.classList.add("bi", "bi-grip-vertical", "fs-2", "drag-handle"); // Add any necessary classes for styling
+    dragHandle.setAttribute("draggable", "true"); // Make it draggable
+    dragHandle.style.cursor = "grab"; // Change cursor to indicate dragging capability
+    return dragHandle;
+}
