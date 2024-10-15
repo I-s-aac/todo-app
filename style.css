@@ -1,4 +1,7 @@
 .under-drag {
-  border-top-width: 5px;
-  border-top-color: #6066ff;
+  border-top: 25px solid #6066ff;
+}
+
+.remove-drag {
+  border-top: 0 solid transparent;
 }/*# sourceMappingURL=style.css.map */
