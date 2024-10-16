@@ -462,6 +462,7 @@ function addList() {
 function addTask() {
     const taskDescription = sanitizeInput(taskAdder.value);
     if (taskDescription && taskLists[currentListIndex]) {
+        taskAdder.value = "";
         taskLists[currentListIndex].tasks.push({ content: taskDescription, done: false });
         updateContainers();
     } else {
