@@ -24,7 +24,7 @@ export function createRemoveButton(action) {
 export function createDoneButton() {
     const button = baseButton();
     button.classList.add("btn-toggle", "ms-3");
-    button.innerText = "Mark Complete";
+    button.innerText = "Toggle completion";
 
     return button;
 }

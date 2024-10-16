@@ -32,6 +32,7 @@ const taskLists = JSON.parse(localStorage.getItem("userList")) ?? [];
 // ]
 
 let currentListIndex = 0; // index representing currently selected
+let previousHoverIndex = 0;
 let currentDragItem = null;
 let currentDragElement = null;
 let currentDragImage = document.createElement("div");
@@ -557,14 +558,25 @@ function updateContainers() {
                 event.preventDefault();
                 if (currentDragItem !== task) {
                     addHoverClass();
+                    previousHoverIndex = taskElement.getAttribute("index");
                 }
             });
 
             taskElement.addEventListener("dragleave", (event) => {
                 event.preventDefault();
-                if (currentDragItem !== task) {
+                const hoveredIndex = document.elementFromPoint(event.clientX, event.clientY).getAttribute("index");
+                if (
+                    currentDragItem !== task &&
+                    (
+                        previousHoverIndex !== taskElement.getAttribute("index") ||
+                        hoveredIndex === null ||
+                        hoveredIndex === currentDragElement.getAttribute("index")
+                    )
+                ) {
                     removeHoverClass();
+                    console.log(taskElement.id);
                     console.log("drag leave", currentDragItem, task)
+
                 }
             });
 
@@ -576,7 +588,6 @@ function updateContainers() {
 
             taskElement.addEventListener("dragover", (event) => {
                 event.preventDefault();
-                console.log("dragging over thing")
             })
 
             taskElement.addEventListener("drop", (event) => {
