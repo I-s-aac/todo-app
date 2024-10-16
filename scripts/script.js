@@ -149,6 +149,24 @@ function updateContainers() {
             removeButton.style.pointerEvents = "none";
         }
 
+        function moveList(fromIndex, toIndex) {
+            // Make sure we're not trying to move the list to itself
+            fromIndex = Number(fromIndex);
+            toIndex = Number(toIndex);
+
+            console.log(fromIndex, toIndex);
+
+            if (toIndex < 0) { toIndex = 0; }
+            if (fromIndex === toIndex) return;
+
+            // Remove the item from its current position
+            const listToMove = taskLists.splice(fromIndex, 1)[0];
+
+            // Insert the list at the new index
+            taskLists.splice(toIndex, 0, listToMove);
+        }
+
+
         listElement.addHoverClass = function () {
             addHoverClass();
         }
@@ -182,6 +200,19 @@ function updateContainers() {
         listElement.addEventListener("drop", (event) => {
             event.preventDefault();
 
+            let x = event.clientX;
+            let y = event.clientY;
+
+            const hoveredElement = document.elementFromPoint(x, y);
+
+            if (hoveredElement !== currentDragElement) {
+                const hoveredIndex = hoveredElement.getAttribute("body-index") ?? hoveredElement.getAttribute("index");
+                if (hoveredIndex !== null) {
+                    // Perform the move operation using your function
+                    moveList(currentDragElement.getAttribute("body-index"), hoveredIndex);
+                    updateContainers(); // Update the UI after moving
+                }
+            }
             removeHoverClass();
         });
 
@@ -216,6 +247,7 @@ function updateContainers() {
                 currentDragImage.innerHTML = "";
                 currentDragImage.style.display = "block";
                 currentDragImage.appendChild(dragImage);
+                listElement.classList.add("drag-placeholder");
 
             }).catch((error) => {
                 console.error('Error generating drag image:', error);
@@ -252,10 +284,30 @@ function updateContainers() {
             handleDrag(event, true); // Handle touch drag
         });
 
+
         dragHandle.addEventListener("touchend", (event) => {
             event.preventDefault();
+
+            // Simulate a "drop" action
+            let touch = event.changedTouches[0];
+            let x = touch.clientX;
+            let y = touch.clientY;
+
+            const hoveredElement = document.elementFromPoint(x, y);
+
+            if (hoveredElement !== currentDragElement) {
+                const hoveredIndex = hoveredElement.getAttribute("body-index") ?? hoveredElement.getAttribute("index");
+                if (hoveredIndex !== null) {
+                    // Perform the move operation using your function
+                    moveList(currentDragElement.getAttribute("body-index"), hoveredIndex);
+                    updateContainers(); // Update the UI after moving
+                }
+            }
+
             for (let i = 0; i < taskLists.length; i++) {
-                document.getElementById(`list-body-${i}`).removeHoverClass();
+                const element = document.getElementById(`list-body-${i}`);
+                element.removeHoverClass();
+                element.classList.remove("drag-placeholder");
             }
             currentDragItem = null;
             currentDragElement = null;

@@ -4,4 +4,14 @@
 
 .remove-drag {
   border-top: 0 solid transparent;
+}
+
+.drag-placeholder {
+  opacity: 0.5;
+  transition: all 0.25s ease;
+}
+.drag-placeholder * {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
 }/*# sourceMappingURL=style.css.map */

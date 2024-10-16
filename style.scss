@@ -5,3 +5,15 @@
 .remove-drag { // apply when stopping dragging over a thing so that the transition goes back
     border-top: 0 solid transparent;
 }
+
+.drag-placeholder {
+    opacity: 0.5;
+    transition: all 0.25s ease; // Smooth transition for any changes
+
+    // Temporarily hide everything inside the element
+    * {
+        opacity: 0; // Fade out all children
+        pointer-events: none; // Disable interactions on child elements
+        transition: opacity 0.25s ease; // Smooth fade-out effect
+    }
+}
