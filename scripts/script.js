@@ -23,6 +23,12 @@ import {
 } from "./listFunctions.js";
 
 import {
+    // functions
+    addTask,
+    removeTask
+} from "./taskFunctions.js";
+
+import {
     // variables
     taskLists,
     draggingData,
@@ -36,12 +42,6 @@ import {
     checkListCompletion
 } from "./utils.js";
 
-draggingData.currentDragImage.style.opacity = 0.75;
-draggingData.currentDragImage.style.position = "absolute";
-draggingData.currentDragImage.style.display = "none";
-draggingData.currentDragImage.style.pointerEvents = "none";
-document.body.appendChild(draggingData.currentDragImage);
-
 
 addListButton.addEventListener("click", (event) => {
     const condition = addList();
@@ -49,7 +49,8 @@ addListButton.addEventListener("click", (event) => {
 })
 
 addTaskButton.addEventListener("click", (event) => {
-    addTask();
+    const condition = addTask();
+    if (condition) { updateContainers(); }
 })
 
 listAdderWarning.style.display = "none";
@@ -72,14 +73,14 @@ listAdder.addEventListener("blur", (event) => {
 })
 
 document.addEventListener("touchmove", (event) => {
-    if (draggingData.currentDragElement !== null && currentDragItem !== null) {
+    if (draggingData.currentDragElement !== null && draggingData.currentDragItem !== null) {
         let touch = event.touches[0];
         let x = touch.clientX;
         let y = touch.clientY;
 
         const hoveredElement = document.elementFromPoint(x, y);
 
-        if (currentDragItem.tasks !== null) {
+        if (draggingData.currentDragItem.tasks !== null) {
             // Loop through all task lists
             for (let i = 0; i < taskLists.length; i++) {
                 const hoveredIndex = hoveredElement.getAttribute("body-index") ?? hoveredElement.getAttribute("index");
@@ -102,7 +103,7 @@ document.addEventListener("touchmove", (event) => {
                     }
                 }
             }
-        } else if (currentDragItem.content !== null) {
+        } else if (draggingData.currentDragItem.content !== null) {
             for (let i = 0; i < taskLists[listTrackingData.currentListIndex].tasks.length; i++) {
                 const hoveredIndex = hoveredElement.getAttribute("index");
                 const currentElement = document.getElementById(`task-${i}`);
@@ -198,14 +199,14 @@ function updateContainers() {
 
         listElement.addEventListener("dragenter", (event) => {
             event.preventDefault();
-            if (currentDragItem !== list) {
+            if (draggingData.currentDragItem !== list) {
                 addHoverClass();
             }
         });
 
         listElement.addEventListener("dragleave", (event) => {
             event.preventDefault();
-            if (currentDragItem !== list) {
+            if (draggingData.currentDragItem !== list) {
                 removeHoverClass();
             }
         });
@@ -251,7 +252,7 @@ function updateContainers() {
             }
 
             // Set the drag image position
-            if (currentDragItem !== null) {
+            if (draggingData.currentDragItem !== null) {
                 const rect = draggingData.currentDragElement.getBoundingClientRect();
                 draggingData.currentDragImage.style.top = `${event.clientY + 10}px`;
                 draggingData.currentDragImage.style.left = `${rect.left}px`;
@@ -259,7 +260,7 @@ function updateContainers() {
         }
 
         dragHandle.addEventListener("dragstart", (event) => {
-            currentDragItem = list;
+            draggingData.currentDragItem = list;
             draggingData.currentDragElement = listElement;
 
             html2canvas(listElement).then((canvas) => {
@@ -280,7 +281,7 @@ function updateContainers() {
         });
 
         dragHandle.addEventListener("dragend", (event) => {
-            currentDragItem = null;
+            draggingData.currentDragItem = null;
             draggingData.currentDragElement = null;
             draggingData.currentDragImage.style.display = "none"
         });
@@ -288,7 +289,7 @@ function updateContainers() {
         // Touch events for mobile support
         dragHandle.addEventListener("touchstart", (event) => {
             event.preventDefault(); // Prevent scrolling
-            currentDragItem = list; // Set the current drag item
+            draggingData.currentDragItem = list; // Set the current drag item
             draggingData.currentDragElement = listElement;
 
             html2canvas(listElement).then((canvas) => {
@@ -331,7 +332,7 @@ function updateContainers() {
                 element.removeHoverClass();
                 element.classList.remove("drag-placeholder");
             }
-            currentDragItem = null;
+            draggingData.currentDragItem = null;
             draggingData.currentDragElement = null;
             draggingData.currentDragImage.style.display = "none"; // Hide the drag image
         });
@@ -498,7 +499,10 @@ function updateContainers() {
             };
 
             const removeButton = createRemoveButton();
-            removeButton.onclick = () => removeTask(index);
+            removeButton.onclick = () => {
+                removeTask(index);
+                updateContainers();
+            };
 
 
             function removeHoverClass() {
@@ -552,9 +556,9 @@ function updateContainers() {
 
             taskElement.addEventListener("dragenter", (event) => {
                 event.preventDefault();
-                if (currentDragItem !== task) {
+                if (draggingData.currentDragItem !== task) {
                     addHoverClass();
-                    previousHoverIndex = taskElement.getAttribute("index");
+                    draggingData.previousHoverIndex = taskElement.getAttribute("index");
                 }
             });
 
@@ -562,9 +566,9 @@ function updateContainers() {
                 event.preventDefault();
                 const hoveredIndex = document.elementFromPoint(event.clientX, event.clientY).getAttribute("index");
                 if (
-                    currentDragItem !== task &&
+                    draggingData.currentDragItem !== task &&
                     (
-                        previousHoverIndex !== taskElement.getAttribute("index") ||
+                        draggingData.previousHoverIndex !== taskElement.getAttribute("index") ||
                         hoveredIndex === null ||
                         hoveredIndex === draggingData.currentDragElement.getAttribute("index")
                     )
@@ -618,7 +622,7 @@ function updateContainers() {
                 }
 
                 // Set the drag image position
-                if (currentDragItem !== null) {
+                if (draggingData.currentDragItem !== null) {
                     const rect = draggingData.currentDragElement.getBoundingClientRect();
                     draggingData.currentDragImage.style.top = `${event.clientY + 20}px`;
                     draggingData.currentDragImage.style.left = `${rect.left}px`;
@@ -626,7 +630,7 @@ function updateContainers() {
             }
 
             dragHandle.addEventListener("dragstart", (event) => {
-                currentDragItem = task;
+                draggingData.currentDragItem = task;
                 draggingData.currentDragElement = taskElement;
 
                 html2canvas(taskElement).then((canvas) => {
@@ -647,7 +651,7 @@ function updateContainers() {
             });
 
             dragHandle.addEventListener("dragend", (event) => {
-                currentDragItem = null;
+                draggingData.currentDragItem = null;
                 draggingData.currentDragElement = null;
                 draggingData.currentDragImage.style.display = "none"
             });
@@ -655,7 +659,7 @@ function updateContainers() {
             // Touch events for mobile support
             dragHandle.addEventListener("touchstart", (event) => {
                 event.preventDefault(); // Prevent scrolling
-                currentDragItem = task; // Set the current drag item
+                draggingData.currentDragItem = task; // Set the current drag item
                 draggingData.currentDragElement = taskElement;
 
                 html2canvas(taskElement).then((canvas) => {
@@ -698,7 +702,7 @@ function updateContainers() {
                     element.removeHoverClass();
                     element.classList.remove("drag-placeholder");
                 }
-                currentDragItem = null;
+                draggingData.currentDragItem = null;
                 draggingData.currentDragElement = null;
                 draggingData.currentDragImage.style.display = "none"; // Hide the drag image
             });
@@ -712,7 +716,6 @@ function updateContainers() {
             const div2 = document.createElement("div");
 
             div.classList.add("d-flex", "justify-content-between", "align-items-center", "flex-row");
-            // div2.classList.add("")
 
             taskElement.setAttribute("index", index);
             div.setAttribute("index", index);
@@ -742,28 +745,6 @@ function updateContainers() {
 
     localStorage.setItem("userList", JSON.stringify(taskLists));
 }
-
-
-function addTask() {
-    const taskDescription = sanitizeInput(taskAdder.value);
-    if (taskDescription && taskLists[listTrackingData.currentListIndex]) {
-        taskAdder.value = "";
-        taskLists[listTrackingData.currentListIndex].tasks.push({ content: taskDescription, done: false });
-        updateContainers();
-    } else {
-        alert("Invalid task description or list does not exist!");
-    }
-}
-
-function removeTask(index) {
-    taskLists[listTrackingData.currentListIndex].tasks.splice(index, 1);
-    checkListCompletion(taskLists[listTrackingData.currentListIndex]);
-    updateContainers();
-}
-
-
-
-
 
 // display the lists and tasks
 updateContainers();
