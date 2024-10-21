@@ -16,26 +16,22 @@ import {
     createDragHandle
 } from "./htmlElements.js";
 
-const taskLists = JSON.parse(localStorage.getItem("userList")) ?? [];
-// format of lists
-// const taskLists = [
-//     {
-//         "name": "example list name", // also the title of the list
-//         "tasks": [
-//             {
-//                 "content": "string which is a description of a task",
-//                 "done": false
-//             }
-//         ],
-//         "done": false
-//     }
-// ]
+import {
+    // functions
+    addList
+} from "./listFunctions.js";
 
-let currentListIndex = 0; // index representing currently selected
-let previousHoverIndex = 0;
-let currentDragItem = null;
-let currentDragElement = null;
-let currentDragImage = document.createElement("div");
+import {
+    // variables
+    taskLists,
+    currentDragElement,
+    currentListIndex,
+    previousHoverIndex,
+    currentDragItem,
+    currentDragImage
+} from "./globalVars.js";
+
+
 currentDragImage.style.opacity = 0.75;
 currentDragImage.style.position = "absolute";
 currentDragImage.style.display = "none";
@@ -758,14 +754,7 @@ function listExists(listName) {
     return false;
 }
 
-function addList() {
-    const listName = sanitizeInput(listAdder.value);
-    if (!listExists(listName) && listName !== "") {
-        taskLists.push({ name: listName, tasks: [], done: false });
-        listAdder.value = "";
-        updateContainers();
-    }
-}
+
 
 function addTask() {
     const taskDescription = sanitizeInput(taskAdder.value);
