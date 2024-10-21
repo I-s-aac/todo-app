@@ -5,7 +5,6 @@ import {
     listContainer,
     taskContainer,
     listAdder,
-    taskAdder,
     listAdderWarning,
     addTaskButton,
     addListButton,
