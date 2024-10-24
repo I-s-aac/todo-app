@@ -14,4 +14,24 @@
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.25s ease;
+}
+
+#listContainer {
+  height: 85vh;
+  overflow-y: auto;
+}
+@media (max-width: 768px) {
+  #listContainer {
+    height: auto;
+  }
+}
+
+#taskContainer {
+  height: 85vh;
+  overflow-y: auto;
+}
+@media (max-width: 768px) {
+  #taskContainer {
+    height: auto;
+  }
 }/*# sourceMappingURL=style.css.map */

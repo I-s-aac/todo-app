@@ -17,3 +17,21 @@
         transition: opacity 0.25s ease; // Smooth fade-out effect
     }
 }
+
+#listContainer {
+    height: 85vh;
+    overflow-y: auto;
+  
+    @media (max-width: 768px) {
+      height: auto; // Adjust height for smaller screens
+    }
+  }
+
+#taskContainer {
+    height: 85vh;
+    overflow-y: auto;
+
+    @media (max-width: 768px) {
+        height: auto; // make the column not take up roughly the full screen on smaller screens
+    }
+}
