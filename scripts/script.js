@@ -42,6 +42,11 @@ import {
     checkListCompletion
 } from "./utils.js";
 
+import {
+    // cool animation
+    animateCut
+} from "./animations.js";
+
 
 addListButton.addEventListener("click", (event) => {
     const condition = addList();
@@ -137,6 +142,28 @@ document.addEventListener("touchmove", (event) => {
         }
     }
 });
+
+
+function removeTaskWithAnimation(index) {
+    const taskElement = document.getElementById(`task-${index}`);
+    if (taskElement) {
+        animateCut(taskElement, () => {
+            removeTask(index); // Call your remove task logic here
+            updateContainers(); // Update the UI after removing
+        });
+    }
+}
+
+function removeListWithAnimation(list) {
+    const index = taskLists.indexOf(list);
+    const listElement = document.getElementById(`list-body-${index}`);
+    if (listElement) {
+        animateCut(listElement, () => {
+            removeList(list);
+            updateContainers();
+        })
+    }
+}
 
 
 function updateContainers() {
@@ -380,8 +407,9 @@ function updateContainers() {
 
         const removeButton = createRemoveButton((event) => {
             event.stopPropagation(); // prevent switching to this list
-            removeList(list);
-            updateContainers();
+            removeListWithAnimation(list);
+            // removeList(list);
+            // updateContainers();
         });
 
 
@@ -520,8 +548,9 @@ function updateContainers() {
 
             const removeButton = createRemoveButton();
             removeButton.onclick = () => {
-                removeTask(index);
-                updateContainers();
+                // removeTask(index);
+                removeTaskWithAnimation(index);
+                // updateContainers();
             };
 
 
