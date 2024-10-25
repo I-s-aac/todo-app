@@ -18,6 +18,19 @@
     }
 }
 
+.taskList-slide-down,
+.taskList-slide-up {
+    transition: transform 0.3s ease;
+}
+
+.taskList-slide-up {
+    transform: translateY(-100%);
+}
+
+.taskList-slide-down {
+    transform: translateY(100%);
+}
+
 #listContainer {
     height: 85vh;
     overflow-y: auto;

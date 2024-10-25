@@ -180,7 +180,6 @@ function updateContainers() {
         const listTitle = document.createElement("h3");
 
 
-
         function removeHoverClass() {
             listElement.classList.remove("under-drag");
             listElement.classList.add("remove-drag");
@@ -218,11 +217,19 @@ function updateContainers() {
             if (toIndex < 0) { return; }
             if (fromIndex === toIndex) return;
 
-            // Remove the item from its current position
             const listToMove = taskLists.splice(fromIndex, 1)[0];
 
-            // Insert the list at the new index
-            taskLists.splice(toIndex, 0, listToMove);
+            if (fromIndex > toIndex) {
+                // move the list up on the page
+                taskLists.splice(toIndex, 0, listToMove);
+            }
+
+            if (fromIndex < toIndex) {
+                // move the list down on the page
+                taskLists.splice(toIndex - 1, 0, listToMove);
+            }
+
+
         }
 
 
@@ -581,7 +588,7 @@ function updateContainers() {
                 removeButton.style.pointerEvents = "none";
             }
 
-            function moveList(fromIndex, toIndex) {
+            function moveTask(fromIndex, toIndex) {
                 fromIndex = Number(fromIndex);
                 toIndex = Number(toIndex);
 
@@ -591,8 +598,13 @@ function updateContainers() {
                 // Remove the item from its current position
                 const taskToMove = taskLists[listTrackingData.currentListIndex].tasks.splice(fromIndex, 1)[0];
 
-                // Insert the list at the new index
-                taskLists[listTrackingData.currentListIndex].tasks.splice(toIndex, 0, taskToMove);
+                if (fromIndex > toIndex) {
+                    // move the task up on the page
+                    taskLists[listTrackingData.currentListIndex].tasks.splice(toIndex, 0, taskToMove);
+                } else {
+                    // move the task down on the page
+                    taskLists[listTrackingData.currentListIndex].tasks.splice(toIndex - 1, 0, taskToMove);
+                }
             }
 
 
@@ -649,7 +661,7 @@ function updateContainers() {
                     const hoveredIndex = hoveredElement.getAttribute("index");
                     if (hoveredIndex !== null) {
                         // Perform the move operation using your function
-                        moveList(draggingData.currentDragElement.getAttribute("index"), hoveredIndex);
+                        moveTask(draggingData.currentDragElement.getAttribute("index"), hoveredIndex);
                         updateContainers(); // Update the UI after moving
                     }
                 }
@@ -741,7 +753,7 @@ function updateContainers() {
                     const hoveredIndex = hoveredElement.getAttribute("index");
                     if (hoveredIndex !== null) {
                         // Perform the move operation using your function
-                        moveList(draggingData.currentDragElement.getAttribute("index"), hoveredIndex);
+                        moveTask(draggingData.currentDragElement.getAttribute("index"), hoveredIndex);
                         updateContainers(); // Update the UI after moving
                     }
                 }
