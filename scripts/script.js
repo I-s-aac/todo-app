@@ -5,6 +5,7 @@ import {
     listContainer,
     taskContainer,
     listAdder,
+    taskAdder,
     listAdderWarning,
     addTaskButton,
     addListButton,
@@ -62,7 +63,10 @@ listAdder.addEventListener("input", (event) => {
         listAdderWarning.style.display = "block";
         listAdder.setAttribute("aria-invalid", true);
     }
-})
+});
+listAdder.addEventListener("keydown", (event) => {
+    if (event.key === "Enter") { addListButton.click(); }
+});
 
 listAdder.addEventListener("blur", (event) => {
     if (listAdder.value === "") {
@@ -70,6 +74,12 @@ listAdder.addEventListener("blur", (event) => {
         listAdder.setAttribute("aria-invalid", false);
     }
 })
+
+taskAdder.addEventListener("keydown", (event) => {
+    if (event.key === "Enter") {
+        addTaskButton.click();
+    }
+});
 
 document.addEventListener("touchmove", (event) => {
     if (draggingData.currentDragElement !== null && draggingData.currentDragItem !== null) {
@@ -339,6 +349,11 @@ function updateContainers() {
 
 
         const editInput = document.createElement("input");
+        editInput.addEventListener("keydown", (event) => { // simulate clicking on the save button
+            if (event.key === "Enter") {
+                editButton.click();
+            }
+        })
 
         const editButton = createEditButton((event) => {
             if (editButton.innerText === "Edit") {
@@ -466,6 +481,12 @@ function updateContainers() {
             const editInput = document.createElement("textarea");
             editInput.style.display = "none";
             editInput.style.width = "75%";
+
+            editInput.addEventListener("keydown", (event) => {
+                if (event.key === "Enter") {
+                    editButton.click();
+                }
+            });
 
             const editButton = createEditButton((event) => {
                 if (editButton.innerText === "Edit") {

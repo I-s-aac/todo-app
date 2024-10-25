@@ -2,107 +2,120 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Todo</title>
-    <!-- bootstrap script and stylesheet -->
-    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-        crossorigin="anonymous"></script>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <!-- bootstrap icons -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Todo</title>
+  <!-- bootstrap script and stylesheet -->
+  <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+    crossorigin="anonymous"></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <!-- bootstrap icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
-    <!-- draw html elements onto canvas -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <!-- draw html elements onto canvas -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
-    <link rel="stylesheet" href="style.css">
-    <script type="module" src="./scripts/script.js"></script>
+  <link rel="stylesheet" href="style.css">
+  <script type="module" src="./scripts/script.js"></script>
 </head>
 
 <body>
-    <main class="container-fluid vh-100 text-center">
+  <main class="container-fluid vh-100 text-center">
+
+    <div class="row">
+
+      <div class="col-12 col-md-4 pt-4">
+
+        <div class="col-12 d-flex flex-column">
+          <label for="listAdder">Create a new list: </label>
+          <input type="text" id="listAdder" aria-describedby="listAdderWarning" placeholder="List name..."
+            autocomplete="off"></input>
+          <div id="listAdderWarning" role="alert">invalid list</div>
+          <button id="addListButton">Add list</button>
+        </div>
+
+        <div class="mt-3" id="listContainer"></div>
+
+      </div>
+
+      <div class="col-12 col-md-8 pt-4">
+
+        <div class="row d-flex justify-content-center">
+          <div class="col col-md-6 d-flex flex-column">
+            <label for="taskAdder">Add a task</label>
+            <input type="text" id="taskAdder" name="taskAdder" placeholder="Task name..." autocomplete="off"></input>
+            <button id="addTaskButton">Add task</button>
+          </div>
+        </div>
 
         <div class="row">
-
-            <div class="col-12 col-md-4 pt-4">
-
-                <div class="col-12 d-flex flex-column">
-                    <label for="listAdder">Create a new list: </label>
-                    <input type="text" id="listAdder" aria-describedby="listAdderWarning" placeholder="List name..."
-                        autocomplete="off"></input>
-                    <div id="listAdderWarning" role="alert">invalid list</div>
-                    <button id="addListButton">Add list</button>
-                </div>
-
-                <div class="mt-3" id="listContainer"></div>
-
-            </div>
-
-            <div class="col-12 col-md-8 pt-4">
-
-                <div class="row d-flex justify-content-center">
-                    <div class="col col-md-6 d-flex flex-column">
-                        <label for="taskAdder">Add a task</label>
-                        <input type="text" id="taskAdder" name="taskAdder" placeholder="Task name..."
-                            autocomplete="off"></input>
-                        <button id="addTaskButton">Add task</button>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col" id="taskContainer"></div>
-                </div>
-
-            </div>
-
+          <div class="col" id="taskContainer"></div>
         </div>
-    </main>
+
+      </div>
+
+    </div>
+  </main>
 
 
-    <div class="rubric_container rubric  for_grading" id="rubric_1211833" style="">
-        <div class="screenreader-only"><h2>Rubric</h2></div>
-        <div class="rubric_title">
-          <div style="display: none;" class="links displaying pull-right">
-            <a href="/courses/794448/rubrics/1211833?rubric_association_id=2211307" class="copy_edit edit_rubric_link no-print no-hover" style="display: none;" title="Edit Rubric" aria-label="Edit Rubric" role="button"><i class="icon-edit standalone-icon"></i></a>
-            <a href="https://mtec.instructure.com/search/rubrics?q=" class="find_rubric_link no-print no-hover" style="display: none;" title="Find Another Rubric" aria-label="Find Another Rubric" role="button"><i class="icon-search standalone-icon"></i></a>
-              <a href="/courses/794448/rubric_associations/2211307" class="delete_rubric_link no-print no-hover" style="display: none;" title="Delete Rubric" aria-label="Delete Rubric" role="button"><i class="icon-trash standalone-icon"></i></a>
-            <div style="display: none;">
-              <div class="use_for_grading">true</div>
-              <div class="free_form_criterion_comments">true</div>
-              <div class="hide_score_total">&nbsp;</div>
-              <div class="hide_outcome_results">&nbsp;</div>
-              <div class="hide_points">&nbsp;</div>
-              <div class="rubric_association_id">2211307</div>
-                <div class="user_id">&nbsp;</div>
-              <div class="assessment_type"></div>
-              <a href="/courses/794448/rubric_associations/2211307/assessments/%7B%7B%20assessment_id%20%7D%7D" rel="nofollow" class="edit_assessment_link">&nbsp;</a>
-              <a href="/courses/794448/rubrics/%7B%7B%20rubric_id%20%7D%7D" class="edit_rubric_url">&nbsp;</a>
-                <a href="/courses/794448/rubric_associations/%7B%7B%20association_id%20%7D%7D" class="delete_rubric_url">&nbsp;</a>
-            </div>
-          </div>
-          <div style="float: right; font-size: 0.8em; display: none;" class="links displaying locked">
-            <span style="">Can't change a rubric once you've started using it.</span>
-              <a href="/courses/794448/rubric_associations/%7B%7B%20association_id%20%7D%7D" class="delete_rubric_url" style="display: none;">&nbsp;</a>
-          </div>
-      
-          <div class="editing" style="float: right;">
-            <a href="https://mtec.instructure.com/search/rubrics?q=" class="find_rubric_link icon-search" style="display: none;" title="Find Existing Rubric">Find a Rubric</a>
-          </div>
-          <div class="editing" style="text-align: left">
-            <label for="rubric-title">Title:</label>
-            <input id="rubric-title" type="text" class="no-margin-bottom" name="title" value="Rubric - JS | Todo App" style="width: 200px;" maxlength="255" aria-label="Title:">
-            <a href="https://mtec.instructure.com/search/rubrics?q=" style="display: none;"><img alt="" src="https://du11hjcvx0uqb.cloudfront.net/dist/images/find-6164443e2a.png"> Find Rubric</a>
-          </div>
-          <div class="displaying">
-            <span class="title" tabindex="-1">Rubric - JS | Todo App</span>
-          </div>
-          <div class="has-assessments-warning" style="display: none;">
-            You've already rated students with this rubric. Any major changes could affect their assessment results.
-          </div>
+  <div class="rubric_container rubric  for_grading" id="rubric_1211833" style="">
+    <div class="screenreader-only">
+      <h2>Rubric</h2>
+    </div>
+    <div class="rubric_title">
+      <div style="display: none;" class="links displaying pull-right">
+        <a href="/courses/794448/rubrics/1211833?rubric_association_id=2211307"
+          class="copy_edit edit_rubric_link no-print no-hover" style="display: none;" title="Edit Rubric"
+          aria-label="Edit Rubric" role="button"><i class="icon-edit standalone-icon"></i></a>
+        <a href="https://mtec.instructure.com/search/rubrics?q=" class="find_rubric_link no-print no-hover"
+          style="display: none;" title="Find Another Rubric" aria-label="Find Another Rubric" role="button"><i
+            class="icon-search standalone-icon"></i></a>
+        <a href="/courses/794448/rubric_associations/2211307" class="delete_rubric_link no-print no-hover"
+          style="display: none;" title="Delete Rubric" aria-label="Delete Rubric" role="button"><i
+            class="icon-trash standalone-icon"></i></a>
+        <div style="display: none;">
+          <div class="use_for_grading">true</div>
+          <div class="free_form_criterion_comments">true</div>
+          <div class="hide_score_total">&nbsp;</div>
+          <div class="hide_outcome_results">&nbsp;</div>
+          <div class="hide_points">&nbsp;</div>
+          <div class="rubric_association_id">2211307</div>
+          <div class="user_id">&nbsp;</div>
+          <div class="assessment_type"></div>
+          <a href="/courses/794448/rubric_associations/2211307/assessments/%7B%7B%20assessment_id%20%7D%7D"
+            rel="nofollow" class="edit_assessment_link">&nbsp;</a>
+          <a href="/courses/794448/rubrics/%7B%7B%20rubric_id%20%7D%7D" class="edit_rubric_url">&nbsp;</a>
+          <a href="/courses/794448/rubric_associations/%7B%7B%20association_id%20%7D%7D"
+            class="delete_rubric_url">&nbsp;</a>
         </div>
-      <table class="rubric_table">
+      </div>
+      <div style="float: right; font-size: 0.8em; display: none;" class="links displaying locked">
+        <span style="">Can't change a rubric once you've started using it.</span>
+        <a href="/courses/794448/rubric_associations/%7B%7B%20association_id%20%7D%7D" class="delete_rubric_url"
+          style="display: none;">&nbsp;</a>
+      </div>
+
+      <div class="editing" style="float: right;">
+        <a href="https://mtec.instructure.com/search/rubrics?q=" class="find_rubric_link icon-search"
+          style="display: none;" title="Find Existing Rubric">Find a Rubric</a>
+      </div>
+      <div class="editing" style="text-align: left">
+        <label for="rubric-title">Title:</label>
+        <input id="rubric-title" type="text" class="no-margin-bottom" name="title" value="Rubric - JS | Todo App"
+          style="width: 200px;" maxlength="255" aria-label="Title:">
+        <a href="https://mtec.instructure.com/search/rubrics?q=" style="display: none;"><img alt=""
+            src="https://du11hjcvx0uqb.cloudfront.net/dist/images/find-6164443e2a.png"> Find Rubric</a>
+      </div>
+      <div class="displaying">
+        <span class="title" tabindex="-1">Rubric - JS | Todo App</span>
+      </div>
+      <div class="has-assessments-warning" style="display: none;">
+        You've already rated students with this rubric. Any major changes could affect their assessment results.
+      </div>
+    </div>
+    <table class="rubric_table">
       <caption>
         <div class="screenreader-only">
           <span class="title">Rubric - JS | Todo App</span>
@@ -118,37 +131,39 @@
         </tr>
       </thead>
       <tbody>
-            
-      <tr id="criterion__5095" class="criterion   " style="">
-        <td class="criterion_description hover-container pad-box-micro">
-          <div class="container">
-            <div class="links editing">
-                <a href="#" class="edit_criterion_link" role="button"><i class="icon-edit standalone-icon"></i><span class="screenreader-only">Edit criterion description</span></a>
-            </div>
-            <div class="description_content">
-              <span class="outcome_sr_content" aria-hidden="true">
-                <i class="learning_outcome_flag icon-outcomes" aria-hidden="true"></i>
-                <span class="screenreader-only">This criterion is linked to a Learning Outcome</span>
-              </span>
-              <span class="description description_title">Required: Users can create any number of To-Do lists and give them a name</span>
-              <span class="learning_outcome_id" style="display: none;"></span>
-              <span class="criterion_id" style="display: none;">_5095</span>
+
+        <tr id="criterion__5095" class="criterion   " style="">
+          <td class="criterion_description hover-container pad-box-micro">
+            <div class="container">
+              <div class="links editing">
+                <a href="#" class="edit_criterion_link" role="button"><i class="icon-edit standalone-icon"></i><span
+                    class="screenreader-only">Edit criterion description</span></a>
+              </div>
+              <div class="description_content">
+                <span class="outcome_sr_content" aria-hidden="true">
+                  <i class="learning_outcome_flag icon-outcomes" aria-hidden="true"></i>
+                  <span class="screenreader-only">This criterion is linked to a Learning Outcome</span>
+                </span>
+                <span class="description description_title">Required: Users can create any number of To-Do lists and
+                  give them a name</span>
+                <span class="learning_outcome_id" style="display: none;"></span>
+                <span class="criterion_id" style="display: none;">_5095</span>
                 <div class="long_description small_description"></div>
-              <div class="hide_when_learning_outcome ">
-                <div class="criterion_use_range_div editing toggle_for_hide_points ">
-                  <label>Range
-                    <input type="checkbox" class="criterion_use_range"></label>
+                <div class="hide_when_learning_outcome ">
+                  <div class="criterion_use_range_div editing toggle_for_hide_points ">
+                    <label>Range
+                      <input type="checkbox" class="criterion_use_range"></label>
+                  </div>
+                </div>
+                <div class="threshold toggle_for_hide_points ">
+                  threshold:
+                  <span class="mastery_points"></span> pts
                 </div>
               </div>
-              <div class="threshold toggle_for_hide_points ">
-                threshold:
-                <span class="mastery_points"></span> pts
-              </div>
+
             </div>
-      
-          </div>
-        </td>
-        <td style="padding: 0;">
+          </td>
+          <td style="padding: 0;">
             <div class="custom_ratings_entry assessing">
               <div style="margin-left: 5px; margin-top: 2px; display: none;" class="saved_custom_rating_holder">
                 <select class="saved_custom_rating">
@@ -162,64 +177,66 @@
               </div>
             </div>
             <div class="displaying custom_rating_comments not_assessing" style="font-size: 0.8em; padding: 0px 5px;">
-              
+
             </div>
-        </td>
-        <td class="nobr points_form toggle_for_hide_points ">
-          <div class="editing" style="white-space: normal">
-            <span style="white-space: nowrap; font-size: 0.8em">
-                
-                  <input type="text" aria-label="Points" value="2" class="criterion_points span1 no-margin-bottom">
-                 pts
-            </span><br>
-          </div>
-          <div class="displaying">
-            <span style="white-space: nowrap;">
-              <span class="criterion_rating_points_holder" style="display: none;">
-                <span class="criterion_rating_points">&nbsp;</span> /
-              </span>
-              <span class="display_criterion_points">2</span> pts<br>
-            </span>
-          </div>
-          <div class="ignoring">
-            <span> -- </span>
-          </div>
-          <div class="criterion_comments">
-          </div>
-        </td>
-      </tr>
-      
-            
-      <tr id="criterion__3816" class="criterion   " style="">
-        <td class="criterion_description hover-container pad-box-micro">
-          <div class="container">
-            <div class="links editing">
-                <a href="#" class="edit_criterion_link" role="button"><i class="icon-edit standalone-icon"></i><span class="screenreader-only">Edit criterion description</span></a>
+          </td>
+          <td class="nobr points_form toggle_for_hide_points ">
+            <div class="editing" style="white-space: normal">
+              <span style="white-space: nowrap; font-size: 0.8em">
+
+                <input type="text" aria-label="Points" value="2" class="criterion_points span1 no-margin-bottom">
+                pts
+              </span><br>
             </div>
-            <div class="description_content">
-              <span class="outcome_sr_content" aria-hidden="true">
-                <i class="learning_outcome_flag icon-outcomes" aria-hidden="true"></i>
-                <span class="screenreader-only">This criterion is linked to a Learning Outcome</span>
+            <div class="displaying">
+              <span style="white-space: nowrap;">
+                <span class="criterion_rating_points_holder" style="display: none;">
+                  <span class="criterion_rating_points">&nbsp;</span> /
+                </span>
+                <span class="display_criterion_points">2</span> pts<br>
               </span>
-              <span class="description description_title">Required: Users can create any number of tasks in a list</span>
-              <span class="learning_outcome_id" style="display: none;"></span>
-              <span class="criterion_id" style="display: none;">_3816</span>
+            </div>
+            <div class="ignoring">
+              <span> -- </span>
+            </div>
+            <div class="criterion_comments">
+            </div>
+          </td>
+        </tr>
+
+
+        <tr id="criterion__3816" class="criterion   " style="">
+          <td class="criterion_description hover-container pad-box-micro">
+            <div class="container">
+              <div class="links editing">
+                <a href="#" class="edit_criterion_link" role="button"><i class="icon-edit standalone-icon"></i><span
+                    class="screenreader-only">Edit criterion description</span></a>
+              </div>
+              <div class="description_content">
+                <span class="outcome_sr_content" aria-hidden="true">
+                  <i class="learning_outcome_flag icon-outcomes" aria-hidden="true"></i>
+                  <span class="screenreader-only">This criterion is linked to a Learning Outcome</span>
+                </span>
+                <span class="description description_title">Required: Users can create any number of tasks in a
+                  list</span>
+                <span class="learning_outcome_id" style="display: none;"></span>
+                <span class="criterion_id" style="display: none;">_3816</span>
                 <div class="long_description small_description"></div>
-              <div class="hide_when_learning_outcome ">
-                <div class="criterion_use_range_div editing toggle_for_hide_points ">
-                  <label>Range
-                    <input type="checkbox" class="criterion_use_range"></label>
+                <div class="hide_when_learning_outcome ">
+                  <div class="criterion_use_range_div editing toggle_for_hide_points ">
+                    <label>Range
+                      <input type="checkbox" class="criterion_use_range"></label>
+                  </div>
+                </div>
+                <div class="threshold toggle_for_hide_points ">
+                  threshold:
+                  <span class="mastery_points"></span> pts
                 </div>
               </div>
-              <div class="threshold toggle_for_hide_points ">
-                threshold:
-                <span class="mastery_points"></span> pts
-              </div>
+
             </div>
-      
-          </div>
-        </td>
-        <td style="padding: 0;">
+          </td>
+          <td style="padding: 0;">
             <div class="custom_ratings_entry assessing">
               <div style="margin-left: 5px; margin-top: 2px; display: none;" class="saved_custom_rating_holder">
                 <select class="saved_custom_rating">
@@ -233,64 +250,65 @@
               </div>
             </div>
             <div class="displaying custom_rating_comments not_assessing" style="font-size: 0.8em; padding: 0px 5px;">
-              
+
             </div>
-        </td>
-        <td class="nobr points_form toggle_for_hide_points ">
-          <div class="editing" style="white-space: normal">
-            <span style="white-space: nowrap; font-size: 0.8em">
-                
-                  <input type="text" aria-label="Points" value="2" class="criterion_points span1 no-margin-bottom">
-                 pts
-            </span><br>
-          </div>
-          <div class="displaying">
-            <span style="white-space: nowrap;">
-              <span class="criterion_rating_points_holder" style="display: none;">
-                <span class="criterion_rating_points">&nbsp;</span> /
-              </span>
-              <span class="display_criterion_points">2</span> pts<br>
-            </span>
-          </div>
-          <div class="ignoring">
-            <span> -- </span>
-          </div>
-          <div class="criterion_comments">
-          </div>
-        </td>
-      </tr>
-      
-            
-      <tr id="criterion__7735" class="criterion   " style="">
-        <td class="criterion_description hover-container pad-box-micro">
-          <div class="container">
-            <div class="links editing">
-                <a href="#" class="edit_criterion_link" role="button"><i class="icon-edit standalone-icon"></i><span class="screenreader-only">Edit criterion description</span></a>
+          </td>
+          <td class="nobr points_form toggle_for_hide_points ">
+            <div class="editing" style="white-space: normal">
+              <span style="white-space: nowrap; font-size: 0.8em">
+
+                <input type="text" aria-label="Points" value="2" class="criterion_points span1 no-margin-bottom">
+                pts
+              </span><br>
             </div>
-            <div class="description_content">
-              <span class="outcome_sr_content" aria-hidden="true">
-                <i class="learning_outcome_flag icon-outcomes" aria-hidden="true"></i>
-                <span class="screenreader-only">This criterion is linked to a Learning Outcome</span>
+            <div class="displaying">
+              <span style="white-space: nowrap;">
+                <span class="criterion_rating_points_holder" style="display: none;">
+                  <span class="criterion_rating_points">&nbsp;</span> /
+                </span>
+                <span class="display_criterion_points">2</span> pts<br>
               </span>
-              <span class="description description_title">Required: Users can mark a task as complete.</span>
-              <span class="learning_outcome_id" style="display: none;"></span>
-              <span class="criterion_id" style="display: none;">_7735</span>
+            </div>
+            <div class="ignoring">
+              <span> -- </span>
+            </div>
+            <div class="criterion_comments">
+            </div>
+          </td>
+        </tr>
+
+
+        <tr id="criterion__7735" class="criterion   " style="">
+          <td class="criterion_description hover-container pad-box-micro">
+            <div class="container">
+              <div class="links editing">
+                <a href="#" class="edit_criterion_link" role="button"><i class="icon-edit standalone-icon"></i><span
+                    class="screenreader-only">Edit criterion description</span></a>
+              </div>
+              <div class="description_content">
+                <span class="outcome_sr_content" aria-hidden="true">
+                  <i class="learning_outcome_flag icon-outcomes" aria-hidden="true"></i>
+                  <span class="screenreader-only">This criterion is linked to a Learning Outcome</span>
+                </span>
+                <span class="description description_title">Required: Users can mark a task as complete.</span>
+                <span class="learning_outcome_id" style="display: none;"></span>
+                <span class="criterion_id" style="display: none;">_7735</span>
                 <div class="long_description small_description"></div>
-              <div class="hide_when_learning_outcome ">
-                <div class="criterion_use_range_div editing toggle_for_hide_points ">
-                  <label>Range
-                    <input type="checkbox" class="criterion_use_range"></label>
+                <div class="hide_when_learning_outcome ">
+                  <div class="criterion_use_range_div editing toggle_for_hide_points ">
+                    <label>Range
+                      <input type="checkbox" class="criterion_use_range"></label>
+                  </div>
+                </div>
+                <div class="threshold toggle_for_hide_points ">
+                  threshold:
+                  <span class="mastery_points"></span> pts
                 </div>
               </div>
-              <div class="threshold toggle_for_hide_points ">
-                threshold:
-                <span class="mastery_points"></span> pts
-              </div>
+
             </div>
-      
-          </div>
-        </td>
-        <td style="padding: 0;">
+          </td>
+          <td style="padding: 0;">
             <div class="custom_ratings_entry assessing">
               <div style="margin-left: 5px; margin-top: 2px; display: none;" class="saved_custom_rating_holder">
                 <select class="saved_custom_rating">
@@ -304,64 +322,65 @@
               </div>
             </div>
             <div class="displaying custom_rating_comments not_assessing" style="font-size: 0.8em; padding: 0px 5px;">
-              
+
             </div>
-        </td>
-        <td class="nobr points_form toggle_for_hide_points ">
-          <div class="editing" style="white-space: normal">
-            <span style="white-space: nowrap; font-size: 0.8em">
-                
-                  <input type="text" aria-label="Points" value="2" class="criterion_points span1 no-margin-bottom">
-                 pts
-            </span><br>
-          </div>
-          <div class="displaying">
-            <span style="white-space: nowrap;">
-              <span class="criterion_rating_points_holder" style="display: none;">
-                <span class="criterion_rating_points">&nbsp;</span> /
-              </span>
-              <span class="display_criterion_points">2</span> pts<br>
-            </span>
-          </div>
-          <div class="ignoring">
-            <span> -- </span>
-          </div>
-          <div class="criterion_comments">
-          </div>
-        </td>
-      </tr>
-      
-            
-      <tr id="criterion__8855" class="criterion   " style="">
-        <td class="criterion_description hover-container pad-box-micro">
-          <div class="container">
-            <div class="links editing">
-                <a href="#" class="edit_criterion_link" role="button"><i class="icon-edit standalone-icon"></i><span class="screenreader-only">Edit criterion description</span></a>
+          </td>
+          <td class="nobr points_form toggle_for_hide_points ">
+            <div class="editing" style="white-space: normal">
+              <span style="white-space: nowrap; font-size: 0.8em">
+
+                <input type="text" aria-label="Points" value="2" class="criterion_points span1 no-margin-bottom">
+                pts
+              </span><br>
             </div>
-            <div class="description_content">
-              <span class="outcome_sr_content" aria-hidden="true">
-                <i class="learning_outcome_flag icon-outcomes" aria-hidden="true"></i>
-                <span class="screenreader-only">This criterion is linked to a Learning Outcome</span>
+            <div class="displaying">
+              <span style="white-space: nowrap;">
+                <span class="criterion_rating_points_holder" style="display: none;">
+                  <span class="criterion_rating_points">&nbsp;</span> /
+                </span>
+                <span class="display_criterion_points">2</span> pts<br>
               </span>
-              <span class="description description_title">Required: Users can clear their completed tasks.</span>
-              <span class="learning_outcome_id" style="display: none;"></span>
-              <span class="criterion_id" style="display: none;">_8855</span>
+            </div>
+            <div class="ignoring">
+              <span> -- </span>
+            </div>
+            <div class="criterion_comments">
+            </div>
+          </td>
+        </tr>
+
+
+        <tr id="criterion__8855" class="criterion   " style="">
+          <td class="criterion_description hover-container pad-box-micro">
+            <div class="container">
+              <div class="links editing">
+                <a href="#" class="edit_criterion_link" role="button"><i class="icon-edit standalone-icon"></i><span
+                    class="screenreader-only">Edit criterion description</span></a>
+              </div>
+              <div class="description_content">
+                <span class="outcome_sr_content" aria-hidden="true">
+                  <i class="learning_outcome_flag icon-outcomes" aria-hidden="true"></i>
+                  <span class="screenreader-only">This criterion is linked to a Learning Outcome</span>
+                </span>
+                <span class="description description_title">Required: Users can clear their completed tasks.</span>
+                <span class="learning_outcome_id" style="display: none;"></span>
+                <span class="criterion_id" style="display: none;">_8855</span>
                 <div class="long_description small_description"></div>
-              <div class="hide_when_learning_outcome ">
-                <div class="criterion_use_range_div editing toggle_for_hide_points ">
-                  <label>Range
-                    <input type="checkbox" class="criterion_use_range"></label>
+                <div class="hide_when_learning_outcome ">
+                  <div class="criterion_use_range_div editing toggle_for_hide_points ">
+                    <label>Range
+                      <input type="checkbox" class="criterion_use_range"></label>
+                  </div>
+                </div>
+                <div class="threshold toggle_for_hide_points ">
+                  threshold:
+                  <span class="mastery_points"></span> pts
                 </div>
               </div>
-              <div class="threshold toggle_for_hide_points ">
-                threshold:
-                <span class="mastery_points"></span> pts
-              </div>
+
             </div>
-      
-          </div>
-        </td>
-        <td style="padding: 0;">
+          </td>
+          <td style="padding: 0;">
             <div class="custom_ratings_entry assessing">
               <div style="margin-left: 5px; margin-top: 2px; display: none;" class="saved_custom_rating_holder">
                 <select class="saved_custom_rating">
@@ -375,64 +394,65 @@
               </div>
             </div>
             <div class="displaying custom_rating_comments not_assessing" style="font-size: 0.8em; padding: 0px 5px;">
-              
+
             </div>
-        </td>
-        <td class="nobr points_form toggle_for_hide_points ">
-          <div class="editing" style="white-space: normal">
-            <span style="white-space: nowrap; font-size: 0.8em">
-                
-                  <input type="text" aria-label="Points" value="2" class="criterion_points span1 no-margin-bottom">
-                 pts
-            </span><br>
-          </div>
-          <div class="displaying">
-            <span style="white-space: nowrap;">
-              <span class="criterion_rating_points_holder" style="display: none;">
-                <span class="criterion_rating_points">&nbsp;</span> /
-              </span>
-              <span class="display_criterion_points">2</span> pts<br>
-            </span>
-          </div>
-          <div class="ignoring">
-            <span> -- </span>
-          </div>
-          <div class="criterion_comments">
-          </div>
-        </td>
-      </tr>
-      
-            
-      <tr id="criterion__9358" class="criterion   " style="">
-        <td class="criterion_description hover-container pad-box-micro">
-          <div class="container">
-            <div class="links editing">
-                <a href="#" class="edit_criterion_link" role="button"><i class="icon-edit standalone-icon"></i><span class="screenreader-only">Edit criterion description</span></a>
+          </td>
+          <td class="nobr points_form toggle_for_hide_points ">
+            <div class="editing" style="white-space: normal">
+              <span style="white-space: nowrap; font-size: 0.8em">
+
+                <input type="text" aria-label="Points" value="2" class="criterion_points span1 no-margin-bottom">
+                pts
+              </span><br>
             </div>
-            <div class="description_content">
-              <span class="outcome_sr_content" aria-hidden="true">
-                <i class="learning_outcome_flag icon-outcomes" aria-hidden="true"></i>
-                <span class="screenreader-only">This criterion is linked to a Learning Outcome</span>
+            <div class="displaying">
+              <span style="white-space: nowrap;">
+                <span class="criterion_rating_points_holder" style="display: none;">
+                  <span class="criterion_rating_points">&nbsp;</span> /
+                </span>
+                <span class="display_criterion_points">2</span> pts<br>
               </span>
-              <span class="description description_title">Required: Users can edit tasks.</span>
-              <span class="learning_outcome_id" style="display: none;"></span>
-              <span class="criterion_id" style="display: none;">_9358</span>
+            </div>
+            <div class="ignoring">
+              <span> -- </span>
+            </div>
+            <div class="criterion_comments">
+            </div>
+          </td>
+        </tr>
+
+
+        <tr id="criterion__9358" class="criterion   " style="">
+          <td class="criterion_description hover-container pad-box-micro">
+            <div class="container">
+              <div class="links editing">
+                <a href="#" class="edit_criterion_link" role="button"><i class="icon-edit standalone-icon"></i><span
+                    class="screenreader-only">Edit criterion description</span></a>
+              </div>
+              <div class="description_content">
+                <span class="outcome_sr_content" aria-hidden="true">
+                  <i class="learning_outcome_flag icon-outcomes" aria-hidden="true"></i>
+                  <span class="screenreader-only">This criterion is linked to a Learning Outcome</span>
+                </span>
+                <span class="description description_title">Required: Users can edit tasks.</span>
+                <span class="learning_outcome_id" style="display: none;"></span>
+                <span class="criterion_id" style="display: none;">_9358</span>
                 <div class="long_description small_description"></div>
-              <div class="hide_when_learning_outcome ">
-                <div class="criterion_use_range_div editing toggle_for_hide_points ">
-                  <label>Range
-                    <input type="checkbox" class="criterion_use_range"></label>
+                <div class="hide_when_learning_outcome ">
+                  <div class="criterion_use_range_div editing toggle_for_hide_points ">
+                    <label>Range
+                      <input type="checkbox" class="criterion_use_range"></label>
+                  </div>
+                </div>
+                <div class="threshold toggle_for_hide_points ">
+                  threshold:
+                  <span class="mastery_points"></span> pts
                 </div>
               </div>
-              <div class="threshold toggle_for_hide_points ">
-                threshold:
-                <span class="mastery_points"></span> pts
-              </div>
+
             </div>
-      
-          </div>
-        </td>
-        <td style="padding: 0;">
+          </td>
+          <td style="padding: 0;">
             <div class="custom_ratings_entry assessing">
               <div style="margin-left: 5px; margin-top: 2px; display: none;" class="saved_custom_rating_holder">
                 <select class="saved_custom_rating">
@@ -446,64 +466,66 @@
               </div>
             </div>
             <div class="displaying custom_rating_comments not_assessing" style="font-size: 0.8em; padding: 0px 5px;">
-              
+
             </div>
-        </td>
-        <td class="nobr points_form toggle_for_hide_points ">
-          <div class="editing" style="white-space: normal">
-            <span style="white-space: nowrap; font-size: 0.8em">
-                
-                  <input type="text" aria-label="Points" value="2" class="criterion_points span1 no-margin-bottom">
-                 pts
-            </span><br>
-          </div>
-          <div class="displaying">
-            <span style="white-space: nowrap;">
-              <span class="criterion_rating_points_holder" style="display: none;">
-                <span class="criterion_rating_points">&nbsp;</span> /
-              </span>
-              <span class="display_criterion_points">2</span> pts<br>
-            </span>
-          </div>
-          <div class="ignoring">
-            <span> -- </span>
-          </div>
-          <div class="criterion_comments">
-          </div>
-        </td>
-      </tr>
-      
-            
-      <tr id="criterion__7629" class="criterion   " style="">
-        <td class="criterion_description hover-container pad-box-micro">
-          <div class="container">
-            <div class="links editing">
-                <a href="#" class="edit_criterion_link" role="button"><i class="icon-edit standalone-icon"></i><span class="screenreader-only">Edit criterion description</span></a>
+          </td>
+          <td class="nobr points_form toggle_for_hide_points ">
+            <div class="editing" style="white-space: normal">
+              <span style="white-space: nowrap; font-size: 0.8em">
+
+                <input type="text" aria-label="Points" value="2" class="criterion_points span1 no-margin-bottom">
+                pts
+              </span><br>
             </div>
-            <div class="description_content">
-              <span class="outcome_sr_content" aria-hidden="true">
-                <i class="learning_outcome_flag icon-outcomes" aria-hidden="true"></i>
-                <span class="screenreader-only">This criterion is linked to a Learning Outcome</span>
+            <div class="displaying">
+              <span style="white-space: nowrap;">
+                <span class="criterion_rating_points_holder" style="display: none;">
+                  <span class="criterion_rating_points">&nbsp;</span> /
+                </span>
+                <span class="display_criterion_points">2</span> pts<br>
               </span>
-              <span class="description description_title">Required: Users can delete tasks and lists without needing to complete them first.</span>
-              <span class="learning_outcome_id" style="display: none;"></span>
-              <span class="criterion_id" style="display: none;">_7629</span>
+            </div>
+            <div class="ignoring">
+              <span> -- </span>
+            </div>
+            <div class="criterion_comments">
+            </div>
+          </td>
+        </tr>
+
+
+        <tr id="criterion__7629" class="criterion   " style="">
+          <td class="criterion_description hover-container pad-box-micro">
+            <div class="container">
+              <div class="links editing">
+                <a href="#" class="edit_criterion_link" role="button"><i class="icon-edit standalone-icon"></i><span
+                    class="screenreader-only">Edit criterion description</span></a>
+              </div>
+              <div class="description_content">
+                <span class="outcome_sr_content" aria-hidden="true">
+                  <i class="learning_outcome_flag icon-outcomes" aria-hidden="true"></i>
+                  <span class="screenreader-only">This criterion is linked to a Learning Outcome</span>
+                </span>
+                <span class="description description_title">Required: Users can delete tasks and lists without needing
+                  to complete them first.</span>
+                <span class="learning_outcome_id" style="display: none;"></span>
+                <span class="criterion_id" style="display: none;">_7629</span>
                 <div class="long_description small_description"></div>
-              <div class="hide_when_learning_outcome ">
-                <div class="criterion_use_range_div editing toggle_for_hide_points ">
-                  <label>Range
-                    <input type="checkbox" class="criterion_use_range"></label>
+                <div class="hide_when_learning_outcome ">
+                  <div class="criterion_use_range_div editing toggle_for_hide_points ">
+                    <label>Range
+                      <input type="checkbox" class="criterion_use_range"></label>
+                  </div>
+                </div>
+                <div class="threshold toggle_for_hide_points ">
+                  threshold:
+                  <span class="mastery_points"></span> pts
                 </div>
               </div>
-              <div class="threshold toggle_for_hide_points ">
-                threshold:
-                <span class="mastery_points"></span> pts
-              </div>
+
             </div>
-      
-          </div>
-        </td>
-        <td style="padding: 0;">
+          </td>
+          <td style="padding: 0;">
             <div class="custom_ratings_entry assessing">
               <div style="margin-left: 5px; margin-top: 2px; display: none;" class="saved_custom_rating_holder">
                 <select class="saved_custom_rating">
@@ -517,64 +539,66 @@
               </div>
             </div>
             <div class="displaying custom_rating_comments not_assessing" style="font-size: 0.8em; padding: 0px 5px;">
-              
+
             </div>
-        </td>
-        <td class="nobr points_form toggle_for_hide_points ">
-          <div class="editing" style="white-space: normal">
-            <span style="white-space: nowrap; font-size: 0.8em">
-                
-                  <input type="text" aria-label="Points" value="2" class="criterion_points span1 no-margin-bottom">
-                 pts
-            </span><br>
-          </div>
-          <div class="displaying">
-            <span style="white-space: nowrap;">
-              <span class="criterion_rating_points_holder" style="display: none;">
-                <span class="criterion_rating_points">&nbsp;</span> /
-              </span>
-              <span class="display_criterion_points">2</span> pts<br>
-            </span>
-          </div>
-          <div class="ignoring">
-            <span> -- </span>
-          </div>
-          <div class="criterion_comments">
-          </div>
-        </td>
-      </tr>
-      
-            
-      <tr id="criterion__7825" class="criterion   " style="">
-        <td class="criterion_description hover-container pad-box-micro">
-          <div class="container">
-            <div class="links editing">
-                <a href="#" class="edit_criterion_link" role="button"><i class="icon-edit standalone-icon"></i><span class="screenreader-only">Edit criterion description</span></a>
+          </td>
+          <td class="nobr points_form toggle_for_hide_points ">
+            <div class="editing" style="white-space: normal">
+              <span style="white-space: nowrap; font-size: 0.8em">
+
+                <input type="text" aria-label="Points" value="2" class="criterion_points span1 no-margin-bottom">
+                pts
+              </span><br>
             </div>
-            <div class="description_content">
-              <span class="outcome_sr_content" aria-hidden="true">
-                <i class="learning_outcome_flag icon-outcomes" aria-hidden="true"></i>
-                <span class="screenreader-only">This criterion is linked to a Learning Outcome</span>
+            <div class="displaying">
+              <span style="white-space: nowrap;">
+                <span class="criterion_rating_points_holder" style="display: none;">
+                  <span class="criterion_rating_points">&nbsp;</span> /
+                </span>
+                <span class="display_criterion_points">2</span> pts<br>
               </span>
-              <span class="description description_title">Required: Use some basic styles to enhance the look of the page.</span>
-              <span class="learning_outcome_id" style="display: none;"></span>
-              <span class="criterion_id" style="display: none;">_7825</span>
+            </div>
+            <div class="ignoring">
+              <span> -- </span>
+            </div>
+            <div class="criterion_comments">
+            </div>
+          </td>
+        </tr>
+
+
+        <tr id="criterion__7825" class="criterion   " style="">
+          <td class="criterion_description hover-container pad-box-micro">
+            <div class="container">
+              <div class="links editing">
+                <a href="#" class="edit_criterion_link" role="button"><i class="icon-edit standalone-icon"></i><span
+                    class="screenreader-only">Edit criterion description</span></a>
+              </div>
+              <div class="description_content">
+                <span class="outcome_sr_content" aria-hidden="true">
+                  <i class="learning_outcome_flag icon-outcomes" aria-hidden="true"></i>
+                  <span class="screenreader-only">This criterion is linked to a Learning Outcome</span>
+                </span>
+                <span class="description description_title">Required: Use some basic styles to enhance the look of the
+                  page.</span>
+                <span class="learning_outcome_id" style="display: none;"></span>
+                <span class="criterion_id" style="display: none;">_7825</span>
                 <div class="long_description small_description"></div>
-              <div class="hide_when_learning_outcome ">
-                <div class="criterion_use_range_div editing toggle_for_hide_points ">
-                  <label>Range
-                    <input type="checkbox" class="criterion_use_range"></label>
+                <div class="hide_when_learning_outcome ">
+                  <div class="criterion_use_range_div editing toggle_for_hide_points ">
+                    <label>Range
+                      <input type="checkbox" class="criterion_use_range"></label>
+                  </div>
+                </div>
+                <div class="threshold toggle_for_hide_points ">
+                  threshold:
+                  <span class="mastery_points"></span> pts
                 </div>
               </div>
-              <div class="threshold toggle_for_hide_points ">
-                threshold:
-                <span class="mastery_points"></span> pts
-              </div>
+
             </div>
-      
-          </div>
-        </td>
-        <td style="padding: 0;">
+          </td>
+          <td style="padding: 0;">
             <div class="custom_ratings_entry assessing">
               <div style="margin-left: 5px; margin-top: 2px; display: none;" class="saved_custom_rating_holder">
                 <select class="saved_custom_rating">
@@ -588,64 +612,66 @@
               </div>
             </div>
             <div class="displaying custom_rating_comments not_assessing" style="font-size: 0.8em; padding: 0px 5px;">
-              
+
             </div>
-        </td>
-        <td class="nobr points_form toggle_for_hide_points ">
-          <div class="editing" style="white-space: normal">
-            <span style="white-space: nowrap; font-size: 0.8em">
-                
-                  <input type="text" aria-label="Points" value="2" class="criterion_points span1 no-margin-bottom">
-                 pts
-            </span><br>
-          </div>
-          <div class="displaying">
-            <span style="white-space: nowrap;">
-              <span class="criterion_rating_points_holder" style="display: none;">
-                <span class="criterion_rating_points">&nbsp;</span> /
-              </span>
-              <span class="display_criterion_points">2</span> pts<br>
-            </span>
-          </div>
-          <div class="ignoring">
-            <span> -- </span>
-          </div>
-          <div class="criterion_comments">
-          </div>
-        </td>
-      </tr>
-      
-            
-      <tr id="criterion__708" class="criterion   " style="">
-        <td class="criterion_description hover-container pad-box-micro">
-          <div class="container">
-            <div class="links editing">
-                <a href="#" class="edit_criterion_link" role="button"><i class="icon-edit standalone-icon"></i><span class="screenreader-only">Edit criterion description</span></a>
+          </td>
+          <td class="nobr points_form toggle_for_hide_points ">
+            <div class="editing" style="white-space: normal">
+              <span style="white-space: nowrap; font-size: 0.8em">
+
+                <input type="text" aria-label="Points" value="2" class="criterion_points span1 no-margin-bottom">
+                pts
+              </span><br>
             </div>
-            <div class="description_content">
-              <span class="outcome_sr_content" aria-hidden="true">
-                <i class="learning_outcome_flag icon-outcomes" aria-hidden="true"></i>
-                <span class="screenreader-only">This criterion is linked to a Learning Outcome</span>
+            <div class="displaying">
+              <span style="white-space: nowrap;">
+                <span class="criterion_rating_points_holder" style="display: none;">
+                  <span class="criterion_rating_points">&nbsp;</span> /
+                </span>
+                <span class="display_criterion_points">2</span> pts<br>
               </span>
-              <span class="description description_title">Required: Use local storage to store all user data (list names, tasks in each list, etc)</span>
-              <span class="learning_outcome_id" style="display: none;"></span>
-              <span class="criterion_id" style="display: none;">_708</span>
+            </div>
+            <div class="ignoring">
+              <span> -- </span>
+            </div>
+            <div class="criterion_comments">
+            </div>
+          </td>
+        </tr>
+
+
+        <tr id="criterion__708" class="criterion   " style="">
+          <td class="criterion_description hover-container pad-box-micro">
+            <div class="container">
+              <div class="links editing">
+                <a href="#" class="edit_criterion_link" role="button"><i class="icon-edit standalone-icon"></i><span
+                    class="screenreader-only">Edit criterion description</span></a>
+              </div>
+              <div class="description_content">
+                <span class="outcome_sr_content" aria-hidden="true">
+                  <i class="learning_outcome_flag icon-outcomes" aria-hidden="true"></i>
+                  <span class="screenreader-only">This criterion is linked to a Learning Outcome</span>
+                </span>
+                <span class="description description_title">Required: Use local storage to store all user data (list
+                  names, tasks in each list, etc)</span>
+                <span class="learning_outcome_id" style="display: none;"></span>
+                <span class="criterion_id" style="display: none;">_708</span>
                 <div class="long_description small_description"></div>
-              <div class="hide_when_learning_outcome ">
-                <div class="criterion_use_range_div editing toggle_for_hide_points ">
-                  <label>Range
-                    <input type="checkbox" class="criterion_use_range"></label>
+                <div class="hide_when_learning_outcome ">
+                  <div class="criterion_use_range_div editing toggle_for_hide_points ">
+                    <label>Range
+                      <input type="checkbox" class="criterion_use_range"></label>
+                  </div>
+                </div>
+                <div class="threshold toggle_for_hide_points ">
+                  threshold:
+                  <span class="mastery_points"></span> pts
                 </div>
               </div>
-              <div class="threshold toggle_for_hide_points ">
-                threshold:
-                <span class="mastery_points"></span> pts
-              </div>
+
             </div>
-      
-          </div>
-        </td>
-        <td style="padding: 0;">
+          </td>
+          <td style="padding: 0;">
             <div class="custom_ratings_entry assessing">
               <div style="margin-left: 5px; margin-top: 2px; display: none;" class="saved_custom_rating_holder">
                 <select class="saved_custom_rating">
@@ -659,64 +685,66 @@
               </div>
             </div>
             <div class="displaying custom_rating_comments not_assessing" style="font-size: 0.8em; padding: 0px 5px;">
-              
+
             </div>
-        </td>
-        <td class="nobr points_form toggle_for_hide_points ">
-          <div class="editing" style="white-space: normal">
-            <span style="white-space: nowrap; font-size: 0.8em">
-                
-                  <input type="text" aria-label="Points" value="2" class="criterion_points span1 no-margin-bottom">
-                 pts
-            </span><br>
-          </div>
-          <div class="displaying">
-            <span style="white-space: nowrap;">
-              <span class="criterion_rating_points_holder" style="display: none;">
-                <span class="criterion_rating_points">&nbsp;</span> /
-              </span>
-              <span class="display_criterion_points">2</span> pts<br>
-            </span>
-          </div>
-          <div class="ignoring">
-            <span> -- </span>
-          </div>
-          <div class="criterion_comments">
-          </div>
-        </td>
-      </tr>
-      
-            
-      <tr id="criterion__1075" class="criterion   " style="">
-        <td class="criterion_description hover-container pad-box-micro">
-          <div class="container">
-            <div class="links editing">
-                <a href="#" class="edit_criterion_link" role="button"><i class="icon-edit standalone-icon"></i><span class="screenreader-only">Edit criterion description</span></a>
+          </td>
+          <td class="nobr points_form toggle_for_hide_points ">
+            <div class="editing" style="white-space: normal">
+              <span style="white-space: nowrap; font-size: 0.8em">
+
+                <input type="text" aria-label="Points" value="2" class="criterion_points span1 no-margin-bottom">
+                pts
+              </span><br>
             </div>
-            <div class="description_content">
-              <span class="outcome_sr_content" aria-hidden="true">
-                <i class="learning_outcome_flag icon-outcomes" aria-hidden="true"></i>
-                <span class="screenreader-only">This criterion is linked to a Learning Outcome</span>
+            <div class="displaying">
+              <span style="white-space: nowrap;">
+                <span class="criterion_rating_points_holder" style="display: none;">
+                  <span class="criterion_rating_points">&nbsp;</span> /
+                </span>
+                <span class="display_criterion_points">2</span> pts<br>
               </span>
-              <span class="description description_title">Bonus: Use a CSS library (Bootstrap, Material Design, etc) to style your app (+2 points)</span>
-              <span class="learning_outcome_id" style="display: none;"></span>
-              <span class="criterion_id" style="display: none;">_1075</span>
+            </div>
+            <div class="ignoring">
+              <span> -- </span>
+            </div>
+            <div class="criterion_comments">
+            </div>
+          </td>
+        </tr>
+
+
+        <tr id="criterion__1075" class="criterion   " style="">
+          <td class="criterion_description hover-container pad-box-micro">
+            <div class="container">
+              <div class="links editing">
+                <a href="#" class="edit_criterion_link" role="button"><i class="icon-edit standalone-icon"></i><span
+                    class="screenreader-only">Edit criterion description</span></a>
+              </div>
+              <div class="description_content">
+                <span class="outcome_sr_content" aria-hidden="true">
+                  <i class="learning_outcome_flag icon-outcomes" aria-hidden="true"></i>
+                  <span class="screenreader-only">This criterion is linked to a Learning Outcome</span>
+                </span>
+                <span class="description description_title">Bonus: Use a CSS library (Bootstrap, Material Design, etc)
+                  to style your app (+2 points)</span>
+                <span class="learning_outcome_id" style="display: none;"></span>
+                <span class="criterion_id" style="display: none;">_1075</span>
                 <div class="long_description small_description"></div>
-              <div class="hide_when_learning_outcome ">
-                <div class="criterion_use_range_div editing toggle_for_hide_points ">
-                  <label>Range
-                    <input type="checkbox" class="criterion_use_range"></label>
+                <div class="hide_when_learning_outcome ">
+                  <div class="criterion_use_range_div editing toggle_for_hide_points ">
+                    <label>Range
+                      <input type="checkbox" class="criterion_use_range"></label>
+                  </div>
+                </div>
+                <div class="threshold toggle_for_hide_points ">
+                  threshold:
+                  <span class="mastery_points"></span> pts
                 </div>
               </div>
-              <div class="threshold toggle_for_hide_points ">
-                threshold:
-                <span class="mastery_points"></span> pts
-              </div>
+
             </div>
-      
-          </div>
-        </td>
-        <td style="padding: 0;">
+          </td>
+          <td style="padding: 0;">
             <div class="custom_ratings_entry assessing">
               <div style="margin-left: 5px; margin-top: 2px; display: none;" class="saved_custom_rating_holder">
                 <select class="saved_custom_rating">
@@ -730,64 +758,66 @@
               </div>
             </div>
             <div class="displaying custom_rating_comments not_assessing" style="font-size: 0.8em; padding: 0px 5px;">
-              
+
             </div>
-        </td>
-        <td class="nobr points_form toggle_for_hide_points ">
-          <div class="editing" style="white-space: normal">
-            <span style="white-space: nowrap; font-size: 0.8em">
-                
-                  <input type="text" aria-label="Points" value="0" class="criterion_points span1 no-margin-bottom">
-                 pts
-            </span><br>
-          </div>
-          <div class="displaying">
-            <span style="white-space: nowrap;">
-              <span class="criterion_rating_points_holder" style="display: none;">
-                <span class="criterion_rating_points">&nbsp;</span> /
-              </span>
-              <span class="display_criterion_points">0</span> pts<br>
-            </span>
-          </div>
-          <div class="ignoring">
-            <span> -- </span>
-          </div>
-          <div class="criterion_comments">
-          </div>
-        </td>
-      </tr>
-      
-            
-      <tr id="criterion__6513" class="criterion   " style="">
-        <td class="criterion_description hover-container pad-box-micro">
-          <div class="container">
-            <div class="links editing">
-                <a href="#" class="edit_criterion_link" role="button"><i class="icon-edit standalone-icon"></i><span class="screenreader-only">Edit criterion description</span></a>
+          </td>
+          <td class="nobr points_form toggle_for_hide_points ">
+            <div class="editing" style="white-space: normal">
+              <span style="white-space: nowrap; font-size: 0.8em">
+
+                <input type="text" aria-label="Points" value="0" class="criterion_points span1 no-margin-bottom">
+                pts
+              </span><br>
             </div>
-            <div class="description_content">
-              <span class="outcome_sr_content" aria-hidden="true">
-                <i class="learning_outcome_flag icon-outcomes" aria-hidden="true"></i>
-                <span class="screenreader-only">This criterion is linked to a Learning Outcome</span>
+            <div class="displaying">
+              <span style="white-space: nowrap;">
+                <span class="criterion_rating_points_holder" style="display: none;">
+                  <span class="criterion_rating_points">&nbsp;</span> /
+                </span>
+                <span class="display_criterion_points">0</span> pts<br>
               </span>
-              <span class="description description_title">Bonus: Deleting tasks and/or clearing all completed tasks/lists is animated (+2 points)</span>
-              <span class="learning_outcome_id" style="display: none;"></span>
-              <span class="criterion_id" style="display: none;">_6513</span>
+            </div>
+            <div class="ignoring">
+              <span> -- </span>
+            </div>
+            <div class="criterion_comments">
+            </div>
+          </td>
+        </tr>
+
+
+        <tr id="criterion__6513" class="criterion   " style="">
+          <td class="criterion_description hover-container pad-box-micro">
+            <div class="container">
+              <div class="links editing">
+                <a href="#" class="edit_criterion_link" role="button"><i class="icon-edit standalone-icon"></i><span
+                    class="screenreader-only">Edit criterion description</span></a>
+              </div>
+              <div class="description_content">
+                <span class="outcome_sr_content" aria-hidden="true">
+                  <i class="learning_outcome_flag icon-outcomes" aria-hidden="true"></i>
+                  <span class="screenreader-only">This criterion is linked to a Learning Outcome</span>
+                </span>
+                <span class="description description_title">Bonus: Deleting tasks and/or clearing all completed
+                  tasks/lists is animated (+2 points)</span>
+                <span class="learning_outcome_id" style="display: none;"></span>
+                <span class="criterion_id" style="display: none;">_6513</span>
                 <div class="long_description small_description"></div>
-              <div class="hide_when_learning_outcome ">
-                <div class="criterion_use_range_div editing toggle_for_hide_points ">
-                  <label>Range
-                    <input type="checkbox" class="criterion_use_range"></label>
+                <div class="hide_when_learning_outcome ">
+                  <div class="criterion_use_range_div editing toggle_for_hide_points ">
+                    <label>Range
+                      <input type="checkbox" class="criterion_use_range"></label>
+                  </div>
+                </div>
+                <div class="threshold toggle_for_hide_points ">
+                  threshold:
+                  <span class="mastery_points"></span> pts
                 </div>
               </div>
-              <div class="threshold toggle_for_hide_points ">
-                threshold:
-                <span class="mastery_points"></span> pts
-              </div>
+
             </div>
-      
-          </div>
-        </td>
-        <td style="padding: 0;">
+          </td>
+          <td style="padding: 0;">
             <div class="custom_ratings_entry assessing">
               <div style="margin-left: 5px; margin-top: 2px; display: none;" class="saved_custom_rating_holder">
                 <select class="saved_custom_rating">
@@ -801,67 +831,70 @@
               </div>
             </div>
             <div class="displaying custom_rating_comments not_assessing" style="font-size: 0.8em; padding: 0px 5px;">
-              
+
             </div>
-        </td>
-        <td class="nobr points_form toggle_for_hide_points ">
-          <div class="editing" style="white-space: normal">
-            <span style="white-space: nowrap; font-size: 0.8em">
-                
-                  <input type="text" aria-label="Points" value="0" class="criterion_points span1 no-margin-bottom">
-                 pts
-            </span><br>
-          </div>
-          <div class="displaying">
-            <span style="white-space: nowrap;">
-              <span class="criterion_rating_points_holder" style="display: none;">
-                <span class="criterion_rating_points">&nbsp;</span> /
-              </span>
-              <span class="display_criterion_points">0</span> pts<br>
-            </span>
-          </div>
-          <div class="ignoring">
-            <span> -- </span>
-          </div>
-          <div class="criterion_comments">
-          </div>
-        </td>
-      </tr>
-      
-            
-      <tr id="criterion__8923" class="criterion   " style="">
-        <td class="criterion_description hover-container pad-box-micro">
-          <div class="container">
-            <div class="links editing">
-                <a href="#" class="edit_criterion_link" role="button"><i class="icon-edit standalone-icon"></i><span class="screenreader-only">Edit criterion description</span></a>
+          </td>
+          <td class="nobr points_form toggle_for_hide_points ">
+            <div class="editing" style="white-space: normal">
+              <span style="white-space: nowrap; font-size: 0.8em">
+
+                <input type="text" aria-label="Points" value="0" class="criterion_points span1 no-margin-bottom">
+                pts
+              </span><br>
             </div>
-            <div class="description_content">
-              <span class="outcome_sr_content" aria-hidden="true">
-                <i class="learning_outcome_flag icon-outcomes" aria-hidden="true"></i>
-                <span class="screenreader-only">This criterion is linked to a Learning Outcome</span>
+            <div class="displaying">
+              <span style="white-space: nowrap;">
+                <span class="criterion_rating_points_holder" style="display: none;">
+                  <span class="criterion_rating_points">&nbsp;</span> /
+                </span>
+                <span class="display_criterion_points">0</span> pts<br>
               </span>
-              <span class="description description_title">Bonus: Well documented Git history for the entire project (+5 points)</span>
-              <span class="learning_outcome_id" style="display: none;"></span>
-              <span class="criterion_id" style="display: none;">_8923</span>
+            </div>
+            <div class="ignoring">
+              <span> -- </span>
+            </div>
+            <div class="criterion_comments">
+            </div>
+          </td>
+        </tr>
+
+
+        <tr id="criterion__8923" class="criterion   " style="">
+          <td class="criterion_description hover-container pad-box-micro">
+            <div class="container">
+              <div class="links editing">
+                <a href="#" class="edit_criterion_link" role="button"><i class="icon-edit standalone-icon"></i><span
+                    class="screenreader-only">Edit criterion description</span></a>
+              </div>
+              <div class="description_content">
+                <span class="outcome_sr_content" aria-hidden="true">
+                  <i class="learning_outcome_flag icon-outcomes" aria-hidden="true"></i>
+                  <span class="screenreader-only">This criterion is linked to a Learning Outcome</span>
+                </span>
+                <span class="description description_title">Bonus: Well documented Git history for the entire project
+                  (+5 points)</span>
+                <span class="learning_outcome_id" style="display: none;"></span>
+                <span class="criterion_id" style="display: none;">_8923</span>
                 <div class="long_description small_description">Get into the habit of saving you work.<br>
-      1pt: less than 3 commits for entire project <br>
-      3pt: less than 5 commits for entire project<br>
-      5pt: more than 7 commits for entire project - consistent indication that student have been working on project throughout the project timeline.</div>
-              <div class="hide_when_learning_outcome ">
-                <div class="criterion_use_range_div editing toggle_for_hide_points ">
-                  <label>Range
-                    <input type="checkbox" class="criterion_use_range"></label>
+                  1pt: less than 3 commits for entire project <br>
+                  3pt: less than 5 commits for entire project<br>
+                  5pt: more than 7 commits for entire project - consistent indication that student have been working on
+                  project throughout the project timeline.</div>
+                <div class="hide_when_learning_outcome ">
+                  <div class="criterion_use_range_div editing toggle_for_hide_points ">
+                    <label>Range
+                      <input type="checkbox" class="criterion_use_range"></label>
+                  </div>
+                </div>
+                <div class="threshold toggle_for_hide_points ">
+                  threshold:
+                  <span class="mastery_points"></span> pts
                 </div>
               </div>
-              <div class="threshold toggle_for_hide_points ">
-                threshold:
-                <span class="mastery_points"></span> pts
-              </div>
+
             </div>
-      
-          </div>
-        </td>
-        <td style="padding: 0;">
+          </td>
+          <td style="padding: 0;">
             <div class="custom_ratings_entry assessing">
               <div style="margin-left: 5px; margin-top: 2px; display: none;" class="saved_custom_rating_holder">
                 <select class="saved_custom_rating">
@@ -875,68 +908,69 @@
               </div>
             </div>
             <div class="displaying custom_rating_comments not_assessing" style="font-size: 0.8em; padding: 0px 5px;">
-              
+
             </div>
-        </td>
-        <td class="nobr points_form toggle_for_hide_points ">
-          <div class="editing" style="white-space: normal">
-            <span style="white-space: nowrap; font-size: 0.8em">
-                
-                  <input type="text" aria-label="Points" value="0" class="criterion_points span1 no-margin-bottom">
-                 pts
-            </span><br>
-          </div>
-          <div class="displaying">
-            <span style="white-space: nowrap;">
-              <span class="criterion_rating_points_holder" style="display: none;">
-                <span class="criterion_rating_points">&nbsp;</span> /
-              </span>
-              <span class="display_criterion_points">0</span> pts<br>
-            </span>
-          </div>
-          <div class="ignoring">
-            <span> -- </span>
-          </div>
-          <div class="criterion_comments">
-          </div>
-        </td>
-      </tr>
-      
-            
-      <tr id="criterion_1211833_6565" class="criterion   " style="">
-        <td class="criterion_description hover-container pad-box-micro">
-          <div class="container">
-            <div class="links editing">
-                <a href="#" class="edit_criterion_link" role="button"><i class="icon-edit standalone-icon"></i><span class="screenreader-only">Edit criterion description</span></a>
+          </td>
+          <td class="nobr points_form toggle_for_hide_points ">
+            <div class="editing" style="white-space: normal">
+              <span style="white-space: nowrap; font-size: 0.8em">
+
+                <input type="text" aria-label="Points" value="0" class="criterion_points span1 no-margin-bottom">
+                pts
+              </span><br>
             </div>
-            <div class="description_content">
-              <span class="outcome_sr_content" aria-hidden="true">
-                <i class="learning_outcome_flag icon-outcomes" aria-hidden="true"></i>
-                <span class="screenreader-only">This criterion is linked to a Learning Outcome</span>
+            <div class="displaying">
+              <span style="white-space: nowrap;">
+                <span class="criterion_rating_points_holder" style="display: none;">
+                  <span class="criterion_rating_points">&nbsp;</span> /
+                </span>
+                <span class="display_criterion_points">0</span> pts<br>
               </span>
-              <span class="description description_title">Required: Errors for App</span>
-              <span class="learning_outcome_id" style="display: none;"></span>
-              <span class="criterion_id" style="display: none;">1211833_6565</span>
+            </div>
+            <div class="ignoring">
+              <span> -- </span>
+            </div>
+            <div class="criterion_comments">
+            </div>
+          </td>
+        </tr>
+
+
+        <tr id="criterion_1211833_6565" class="criterion   " style="">
+          <td class="criterion_description hover-container pad-box-micro">
+            <div class="container">
+              <div class="links editing">
+                <a href="#" class="edit_criterion_link" role="button"><i class="icon-edit standalone-icon"></i><span
+                    class="screenreader-only">Edit criterion description</span></a>
+              </div>
+              <div class="description_content">
+                <span class="outcome_sr_content" aria-hidden="true">
+                  <i class="learning_outcome_flag icon-outcomes" aria-hidden="true"></i>
+                  <span class="screenreader-only">This criterion is linked to a Learning Outcome</span>
+                </span>
+                <span class="description description_title">Required: Errors for App</span>
+                <span class="learning_outcome_id" style="display: none;"></span>
+                <span class="criterion_id" style="display: none;">1211833_6565</span>
                 <div class="long_description small_description">4pt - perfect app<br>
-      3pt - one error<br>
-      2pt - two errors<br>
-      1pt - three errors<br>
-      0pt - if app doesn't work at all</div>
-              <div class="hide_when_learning_outcome ">
-                <div class="criterion_use_range_div editing toggle_for_hide_points ">
-                  <label>Range
-                    <input type="checkbox" class="criterion_use_range"></label>
+                  3pt - one error<br>
+                  2pt - two errors<br>
+                  1pt - three errors<br>
+                  0pt - if app doesn't work at all</div>
+                <div class="hide_when_learning_outcome ">
+                  <div class="criterion_use_range_div editing toggle_for_hide_points ">
+                    <label>Range
+                      <input type="checkbox" class="criterion_use_range"></label>
+                  </div>
+                </div>
+                <div class="threshold toggle_for_hide_points ">
+                  threshold:
+                  <span class="mastery_points"></span> pts
                 </div>
               </div>
-              <div class="threshold toggle_for_hide_points ">
-                threshold:
-                <span class="mastery_points"></span> pts
-              </div>
+
             </div>
-      
-          </div>
-        </td>
-        <td style="padding: 0;">
+          </td>
+          <td style="padding: 0;">
             <div class="custom_ratings_entry assessing">
               <div style="margin-left: 5px; margin-top: 2px; display: none;" class="saved_custom_rating_holder">
                 <select class="saved_custom_rating">
@@ -950,150 +984,166 @@
               </div>
             </div>
             <div class="displaying custom_rating_comments not_assessing" style="font-size: 0.8em; padding: 0px 5px;">
-              
+
             </div>
-        </td>
-        <td class="nobr points_form toggle_for_hide_points ">
-          <div class="editing" style="white-space: normal">
-            <span style="white-space: nowrap; font-size: 0.8em">
-                
-                  <input type="text" aria-label="Points" value="4" class="criterion_points span1 no-margin-bottom">
-                 pts
-            </span><br>
-          </div>
-          <div class="displaying">
-            <span style="white-space: nowrap;">
-              <span class="criterion_rating_points_holder" style="display: none;">
-                <span class="criterion_rating_points">&nbsp;</span> /
-              </span>
-              <span class="display_criterion_points">4</span> pts<br>
-            </span>
-          </div>
-          <div class="ignoring">
-            <span> -- </span>
-          </div>
-          <div class="criterion_comments">
-          </div>
-        </td>
-      </tr>
-      
-        
-      <tr id="criterion_blank" class="criterion blank  " style="display: none;">
-        <td class="criterion_description hover-container pad-box-micro">
-          <div class="container">
-            <div class="links editing">
-                <a href="#" class="edit_criterion_link" role="button"><i class="icon-edit standalone-icon"></i><span class="screenreader-only">Edit criterion description</span></a>
-                <a href="#" class="delete_criterion_link" role="button"><i class="icon-trash standalone-icon"></i><span class="screenreader-only">Delete criterion row</span></a>
+          </td>
+          <td class="nobr points_form toggle_for_hide_points ">
+            <div class="editing" style="white-space: normal">
+              <span style="white-space: nowrap; font-size: 0.8em">
+
+                <input type="text" aria-label="Points" value="4" class="criterion_points span1 no-margin-bottom">
+                pts
+              </span><br>
             </div>
-            <div class="description_content">
-              <span class="outcome_sr_content" aria-hidden="true">
-                <i class="learning_outcome_flag icon-outcomes" aria-hidden="true"></i>
-                <span class="screenreader-only">This criterion is linked to a Learning Outcome</span>
+            <div class="displaying">
+              <span style="white-space: nowrap;">
+                <span class="criterion_rating_points_holder" style="display: none;">
+                  <span class="criterion_rating_points">&nbsp;</span> /
+                </span>
+                <span class="display_criterion_points">4</span> pts<br>
               </span>
-              <span class="description description_title">Description of criterion</span>
-              <span class="learning_outcome_id" style="display: none;"></span>
-              <span class="criterion_id" style="display: none;"></span>
+            </div>
+            <div class="ignoring">
+              <span> -- </span>
+            </div>
+            <div class="criterion_comments">
+            </div>
+          </td>
+        </tr>
+
+
+        <tr id="criterion_blank" class="criterion blank  " style="display: none;">
+          <td class="criterion_description hover-container pad-box-micro">
+            <div class="container">
+              <div class="links editing">
+                <a href="#" class="edit_criterion_link" role="button"><i class="icon-edit standalone-icon"></i><span
+                    class="screenreader-only">Edit criterion description</span></a>
+                <a href="#" class="delete_criterion_link" role="button"><i class="icon-trash standalone-icon"></i><span
+                    class="screenreader-only">Delete criterion row</span></a>
+              </div>
+              <div class="description_content">
+                <span class="outcome_sr_content" aria-hidden="true">
+                  <i class="learning_outcome_flag icon-outcomes" aria-hidden="true"></i>
+                  <span class="screenreader-only">This criterion is linked to a Learning Outcome</span>
+                </span>
+                <span class="description description_title">Description of criterion</span>
+                <span class="learning_outcome_id" style="display: none;"></span>
+                <span class="criterion_id" style="display: none;"></span>
                 <div class="long_description small_description"></div>
-              <div class="hide_when_learning_outcome ">
-                <div class="criterion_use_range_div editing toggle_for_hide_points ">
-                  <label>Range
-                    <input type="checkbox" class="criterion_use_range"></label>
+                <div class="hide_when_learning_outcome ">
+                  <div class="criterion_use_range_div editing toggle_for_hide_points ">
+                    <label>Range
+                      <input type="checkbox" class="criterion_use_range"></label>
+                  </div>
+                </div>
+                <div class="threshold toggle_for_hide_points ">
+                  threshold:
+                  <span class="mastery_points">5</span> pts
                 </div>
               </div>
-              <div class="threshold toggle_for_hide_points ">
-                threshold:
-                <span class="mastery_points">5</span> pts
-              </div>
+
             </div>
-      
-          </div>
-        </td>
-        <td style="padding: 0;">
-            <table class="ratings" style=""><tbody><tr>
-                <td class="rating edge_rating
+          </td>
+          <td style="padding: 0;">
+            <table class="ratings" style="">
+              <tbody>
+                <tr>
+                  <td class="rating edge_rating
                       
                       ">
-                  <div class="container">
-                    <div class="rating-main">
+                    <div class="container">
+                      <div class="rating-main">
                         <div class="editing links">
-                          <a href="#" class="edit_rating_link" role="button"><i class="icon-edit standalone-icon"></i><span class="screenreader-only">Edit rating</span></a>
-                          <a href="#" class="delete_rating_link"><i class="icon-trash standalone-icon"></i><span class="screenreader-only">Delete rating</span></a>
+                          <a href="#" class="edit_rating_link" role="button"><i
+                              class="icon-edit standalone-icon"></i><span class="screenreader-only">Edit
+                              rating</span></a>
+                          <a href="#" class="delete_rating_link"><i class="icon-trash standalone-icon"></i><span
+                              class="screenreader-only">Delete rating</span></a>
                         </div>
                         <div class="clear"></div>
-                      <span class="nobr toggle_for_hide_points ">
-                        <span class="points">5</span>
-                        <span class="range_rating" style="display: none;">to &gt;<span class="min_points">0</span></span> pts
-                      </span>
-                      <div class="description rating_description_value">Full Marks</div>
-                      <div class="rating_long_description small_description"></div>
-                      <span class="rating_id" style="display: none;">blank</span>
-                    </div>
-                      <div class="editing links add_rating_link">
-                        <a href="#" class="add_rating_link_after" aria-label="Add rating" role="button"><i class="icon-add icon-Solid"></i></a>
+                        <span class="nobr toggle_for_hide_points ">
+                          <span class="points">5</span>
+                          <span class="range_rating" style="display: none;">to &gt;<span
+                              class="min_points">0</span></span> pts
+                        </span>
+                        <div class="description rating_description_value">Full Marks</div>
+                        <div class="rating_long_description small_description"></div>
+                        <span class="rating_id" style="display: none;">blank</span>
                       </div>
-                  </div>
-                </td>
-                <td class="rating edge_rating
+                      <div class="editing links add_rating_link">
+                        <a href="#" class="add_rating_link_after" aria-label="Add rating" role="button"><i
+                            class="icon-add icon-Solid"></i></a>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="rating edge_rating
                       infinitesimal
                       ">
-                  <div class="container">
-                    <div class="rating-main">
+                    <div class="container">
+                      <div class="rating-main">
                         <div class="editing links">
-                          <a href="#" class="edit_rating_link" role="button"><i class="icon-edit standalone-icon"></i><span class="screenreader-only">Edit rating</span></a>
-                          <a href="#" class="delete_rating_link"><i class="icon-trash standalone-icon"></i><span class="screenreader-only">Delete rating</span></a>
+                          <a href="#" class="edit_rating_link" role="button"><i
+                              class="icon-edit standalone-icon"></i><span class="screenreader-only">Edit
+                              rating</span></a>
+                          <a href="#" class="delete_rating_link"><i class="icon-trash standalone-icon"></i><span
+                              class="screenreader-only">Delete rating</span></a>
                         </div>
                         <div class="clear"></div>
-                      <span class="nobr toggle_for_hide_points ">
-                        <span class="points">0</span>
-                        <span class="range_rating" style="display: none;">to &gt;<span class="min_points">0</span></span> pts
-                      </span>
-                      <div class="description rating_description_value">No Marks</div>
-                      <div class="rating_long_description small_description"></div>
-                      <span class="rating_id" style="display: none;">blank_2</span>
+                        <span class="nobr toggle_for_hide_points ">
+                          <span class="points">0</span>
+                          <span class="range_rating" style="display: none;">to &gt;<span
+                              class="min_points">0</span></span> pts
+                        </span>
+                        <div class="description rating_description_value">No Marks</div>
+                        <div class="rating_long_description small_description"></div>
+                        <span class="rating_id" style="display: none;">blank_2</span>
+                      </div>
                     </div>
-                  </div>
-                </td>
-            </tr></tbody></table>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
             <div style="display: none; font-size: 0.8em; margin: 5px;" class="custom_ratings">
               This area will be used by the assessor to leave comments related to this criterion.
             </div>
-        </td>
-        <td class="nobr points_form toggle_for_hide_points ">
-          <div class="editing" style="white-space: normal">
-            <span style="white-space: nowrap; font-size: 0.8em">
-                
-                  <input type="text" aria-label="Points" value="5" class="criterion_points span1 no-margin-bottom">
-                 pts
-            </span><br>
-          </div>
-          <div class="displaying">
-            <span style="white-space: nowrap;">
-              <span class="criterion_rating_points_holder" style="display: none;">
-                <span class="criterion_rating_points">&nbsp;</span> /
+          </td>
+          <td class="nobr points_form toggle_for_hide_points ">
+            <div class="editing" style="white-space: normal">
+              <span style="white-space: nowrap; font-size: 0.8em">
+
+                <input type="text" aria-label="Points" value="5" class="criterion_points span1 no-margin-bottom">
+                pts
+              </span><br>
+            </div>
+            <div class="displaying">
+              <span style="white-space: nowrap;">
+                <span class="criterion_rating_points_holder" style="display: none;">
+                  <span class="criterion_rating_points">&nbsp;</span> /
+                </span>
+                <span class="display_criterion_points">5</span> pts<br>
               </span>
-              <span class="display_criterion_points">5</span> pts<br>
-            </span>
-          </div>
-          <div class="ignoring">
-            <span> -- </span>
-          </div>
-          <div class="criterion_comments">
+            </div>
+            <div class="ignoring">
+              <span> -- </span>
+            </div>
+            <div class="criterion_comments">
               <a href="#" class="no-hover criterion_comments_link" title="Additional Comments">
-                <img alt="Additional Comments" src="https://du11hjcvx0uqb.cloudfront.net/dist/images/rubric_comment-ddae8546ab.png">
+                <img alt="Additional Comments"
+                  src="https://du11hjcvx0uqb.cloudfront.net/dist/images/rubric_comment-ddae8546ab.png">
               </a>
               <div class="custom_rating" style="display: none;"></div>
-          </div>
-        </td>
-      </tr>
-      
+            </div>
+          </td>
+        </tr>
+
         <tr class="summary">
           <td colspan="4">
             <div class="total_points_holder toggle_for_hide_points " style="float: right; ">
               <span>Total Points:
-                  <span class="rubric_total">
-                    20
-                  </span>
-       <span class="assessing">out of 20</span>        </span>
+                <span class="rubric_total">
+                  20
+                </span>
+                <span class="assessing">out of 20</span> </span>
             </div>
             <div class="editing pull-left">
               <span id="add_criterion_holder" class="criterion_link"></span>
@@ -1102,8 +1152,8 @@
           </td>
         </tr>
       </tbody>
-      </table>
-      </div>
+    </table>
+  </div>
 </body>
 
 </html>
