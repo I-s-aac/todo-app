@@ -1,6 +1,6 @@
 import { taskLists, listTrackingData } from "./globalVars.js";
 import { taskAdder } from "./htmlElements.js";
-import { sanitizeInput,checkListCompletion } from "./utils.js";
+import { sanitizeInput, checkListCompletion } from "./utils.js";
 
 export function addTask() {
     const taskDescription = sanitizeInput(taskAdder.value);

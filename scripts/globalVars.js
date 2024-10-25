@@ -2,17 +2,10 @@ export const taskLists = JSON.parse(localStorage.getItem("userList")) ?? [];
 export const listTrackingData = {
     "currentListIndex": 0
 }
-const draggingData = {
-    "previousHoverIndex": 0,
+export const draggingData = {
+    "currentVisualIndex": 0, // where the element looks like it is
     "currentDragItem": null,
     "currentDragElement": null,
-    "currentDragImage": document.createElement("div")
+    "offsetX": 0,
+    "offsetY": 0
 }
-
-draggingData.currentDragImage.style.opacity = 0.75;
-draggingData.currentDragImage.style.position = "absolute";
-draggingData.currentDragImage.style.display = "none";
-draggingData.currentDragImage.style.pointerEvents = "none";
-document.body.appendChild(draggingData.currentDragImage);
-
-export { draggingData };

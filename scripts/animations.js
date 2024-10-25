@@ -47,16 +47,16 @@ export function animateCut(element, onComplete) {
 
     // Step 2: Animate the halves falling with gravity
     setTimeout(() => {
-        
-        
+
+
         // Function to simulate falling and rotation
         const animateHalf = (half) => {
-            
+
             let positionX = 0;
             let positionY = 0;
             let yv = 0;
             let xv = 0;
-            
+
             const gravity = (Math.random() * 3) + 10; // Gravity effect
             const jumpForce = Math.random() * 300;
             let angle = Math.random() * 360;

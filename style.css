@@ -1,3 +1,7 @@
+:root {
+  --dynamic-height: 0;
+}
+
 .under-drag {
   border-top: 25px solid #6066ff;
 }
@@ -14,6 +18,20 @@
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.25s ease;
+}
+
+.shift-up,
+.shift-down {
+  position: relative;
+  transition: transform 0.25s ease;
+}
+
+.shift-up {
+  transform: translateY(calc(-1 * var(--dynamic-height)));
+}
+
+.shift-down {
+  transform: translateY(var(--dynamic-height));
 }
 
 #listContainer {

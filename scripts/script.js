@@ -86,63 +86,6 @@ taskAdder.addEventListener("keydown", (event) => {
     }
 });
 
-document.addEventListener("touchmove", (event) => {
-    if (draggingData.currentDragElement !== null && draggingData.currentDragItem !== null) {
-        let touch = event.touches[0];
-        let x = touch.clientX;
-        let y = touch.clientY;
-
-        const hoveredElement = document.elementFromPoint(x, y);
-
-        if (draggingData.currentDragItem.tasks !== null) {
-            // Loop through all task lists
-            for (let i = 0; i < taskLists.length; i++) {
-                const hoveredIndex = hoveredElement.getAttribute("body-index") ?? hoveredElement.getAttribute("index");
-                const currentElement = document.getElementById(`list-body-${i}`);
-
-                if (hoveredElement === null) {
-                    currentElement.removeHoverClass();
-                    break;
-                }
-                if (hoveredIndex === null) {
-                    currentElement.removeHoverClass();
-                    break;
-                }
-
-                if (currentElement !== draggingData.currentDragElement) {
-                    if (i == hoveredIndex) {
-                        currentElement.addHoverClass();
-                    } else {
-                        currentElement.removeHoverClass();
-                    }
-                }
-            }
-        } else if (draggingData.currentDragItem.content !== null) {
-            for (let i = 0; i < taskLists[listTrackingData.currentListIndex].tasks.length; i++) {
-                const hoveredIndex = hoveredElement.getAttribute("index");
-                const currentElement = document.getElementById(`task-${i}`);
-
-                if (hoveredElement === null) {
-                    currentElement.removeHoverClass();
-                    break;
-                }
-                if (hoveredIndex === null) {
-                    currentElement.removeHoverClass();
-                    break;
-                }
-
-                if (currentElement !== draggingData.currentDragElement) {
-                    if (i == hoveredIndex) {
-                        currentElement.addHoverClass();
-                    } else {
-                        currentElement.removeHoverClass();
-                    }
-                }
-            }
-        }
-    }
-});
-
 
 function removeTaskWithAnimation(index) {
     const taskElement = document.getElementById(`task-${index}`);
@@ -156,7 +99,7 @@ function removeTaskWithAnimation(index) {
 
 function removeListWithAnimation(list) {
     const index = taskLists.indexOf(list);
-    const listElement = document.getElementById(`list-body-${index}`);
+    const listElement = document.getElementById(`list-${index}`);
     if (listElement) {
         animateCut(listElement, () => {
             removeList(list);
@@ -166,11 +109,203 @@ function removeListWithAnimation(list) {
 }
 
 
+
+function convertTouchToXY(event) {
+    const touch = event.touches[0];
+    return [touch?.clientX ?? 0, touch?.clientY ?? 0]
+}
+
+function handleDragStart(event, isTouch = false, currentDragItem, currentDragElement) {
+
+    let x = event.clientX;
+    let y = event.clientY;
+
+    if (isTouch) [x, y] = convertTouchToXY(event);
+
+    draggingData.currentDragItem = currentDragItem;
+    draggingData.currentDragElement = currentDragElement;
+
+    draggingData.currentDragElement.style.position = "relative";
+    draggingData.currentDragElement.style.zIndex = 999;
+
+    draggingData.currentVisualIndex = Number(draggingData.currentDragElement.getAttribute("index"));
+
+    const rect = draggingData.currentDragElement.getBoundingClientRect();
+
+    draggingData.offsetX = rect.left;
+    draggingData.offsetY = rect.top + rect.height / 2;
+
+    if (isTouch) return;
+    // Create a transparent 1x1 pixel PNG
+    const transparentImage = new Image();
+    transparentImage.src = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUA' +
+        'AAABCAIAAADkYNOEAAAAFElEQVR42mJ8//8/AwAB/4B4rA2QAAAAAElFTkSuQmCC';
+
+    // Set the transparent image as the drag image
+    event.dataTransfer.setDragImage(transparentImage, 0, 0);
+}
+
+let sizeSet = false;
+function handleDrag(event, isTouch = false, dataType, list) {
+    if (draggingData.currentDragItem !== null && draggingData.currentDragElement !== null) {
+
+        let x = event.clientX;
+        let y = event.clientY;
+
+        if (isTouch) [x, y] = convertTouchToXY(event);
+
+
+        draggingData.currentDragElement.style.transition = "transform 0.0s";
+        draggingData.currentDragElement.style.transform =
+            `translate(${x - draggingData.offsetX + 5}px, ${y - draggingData.offsetY}px)`;
+
+        let hoveredElement = document.elementFromPoint(x, y);
+        // make sure it's not a string
+        const hoveredIndex = hoveredElement.getAttribute("index") !== null ? Number(hoveredElement.getAttribute("index")) : null;
+
+
+        if (hoveredIndex !== null) {
+            // make sure we're modifiying the whole element
+            hoveredElement = document.getElementById(`${dataType}-${hoveredIndex}`);
+
+            function clear(element) {
+                element.classList.remove("shift-up", "shift-down");
+            }
+            function up(element) {
+                element.classList.add("shift-up");
+                element.classList.remove("shift-down");
+            }
+            function down(element) {
+                element.classList.add("shift-down");
+                element.classList.remove("shift-up");
+            }
+
+            if (!sizeSet) {
+                sizeSet = true;
+                let style = window.getComputedStyle(hoveredElement);
+                let height = parseFloat(hoveredElement.offsetHeight) + parseFloat(style.marginTop) + parseFloat(style.marginBottom);
+                document.documentElement.style.setProperty("--dynamic-height", `${height}px`);
+            }
+            console.log(draggingData.currentVisualIndex, hoveredIndex);
+
+            const hoverContainsUp = hoveredElement.classList.contains("shift-up");
+            const hoverContainsDown = hoveredElement.classList.contains("shift-down");
+
+            if (draggingData.currentVisualIndex === hoveredIndex - 1) {
+                up(hoveredElement);
+            } else if (draggingData.currentVisualIndex === hoveredIndex + 1) {
+                down(hoveredElement);
+            } else {
+                setTimeout(() => {
+                    if (draggingData.currentVisualIndex === hoveredIndex && hoverContainsUp) {
+                        clear(hoveredElement);
+                        console.log("test", draggingData.currentVisualIndex, hoveredIndex);
+                    }
+                }, 1000);
+            }
+
+            draggingData.currentVisualIndex = hoveredIndex;
+
+        }
+    }
+}
+
+
+
+/* 
+// function handleDrag(event, isTouch = false, dataType, list) {
+//     if (draggingData.currentDragItem !== null && draggingData.currentDragElement !== null) {
+
+//         let x = event.clientX;
+//         let y = event.clientY;
+
+//         if (isTouch) [x, y] = convertTouchToXY(event);
+
+
+//         draggingData.currentDragElement.style.transition = "transform 0.0s";
+//         draggingData.currentDragElement.style.transform =
+//             `translate(${x - draggingData.offsetX + 5}px, ${y - draggingData.offsetY}px)`;
+
+//         const hoveredElement = document.elementFromPoint(x, y);
+//         const hoveredIndex = hoveredElement.getAttribute("index");
+//         const dragElementIndex = draggingData.currentDragElement.getAttribute("index");
+
+
+//         if (hoveredIndex !== null) {
+//             const diff = Number(draggingData.currentVisualIndex) - Number(dragElementIndex);
+//             draggingData.currentVisualIndex = hoveredIndex;
+
+
+
+//             function up(element) {
+//                 element.classList.add("shift-up");
+//                 element.classList.remove("shift-down");
+//             }
+//             function down(element) {
+//                 element.classList.add("shift-down");
+//                 element.classList.remove("shift-up");
+//             }
+//             console.log(diff, "diff")
+
+//             let style = window.getComputedStyle(hoveredElement);
+//             let height = parseFloat(hoveredElement.offsetHeight) + parseFloat(style.marginTop) + parseFloat(style.marginBottom);
+//             document.documentElement.style.setProperty("--dynamic-height", `${height}px`);
+
+//             for (let i = 0; i < list.length; i++) {
+//                 if (i === dragElementIndex) continue;
+
+//                 const element = document.getElementById(`${dataType}-${i}`);
+
+
+
+
+//             }
+//         }
+//     }
+// }
+ */
+function handleDragEnd(event, isTouch = false, dataType, dataMoveFunction, list) {
+
+    let x = event.clientX;
+    let y = event.clientY;
+
+    if (isTouch) {
+        [x, y] = convertTouchToXY(event);
+    }
+
+    const hoveredElement = document.elementFromPoint(x, y);
+    const hoveredIndex = hoveredElement.getAttribute("index");
+
+    // fix styling of the elements
+    for (let i = 0; i < list.length; i++) {
+        const element = document.getElementById(`${dataType}-${i}`);
+        // remove the slider classes and reset transform
+        element.classList.remove("shift-up");
+        element.classList.remove("shift-down");
+        element.style.transform = "";
+    }
+
+    const visIndex = draggingData.currentVisualIndex;
+    const index = Number(draggingData.currentDragElement.getAttribute("index"));
+
+    if (visIndex !== index) {
+        dataMoveFunction(index, visIndex);
+
+        draggingData.currentDragItem = null;
+        draggingData.currentDragElement = null;
+
+        updateContainers();
+    }
+}
+
+
+
 function updateContainers() {
     // clear containers
     listContainer.innerHTML = "";
     taskContainer.innerHTML = "";
 
+    let index = 0;
     // display lists to page
     for (const list of taskLists) {
 
@@ -179,211 +314,49 @@ function updateContainers() {
         const listElementRight = document.createElement("div");
         const listTitle = document.createElement("h3");
 
-
-        function removeHoverClass() {
-            listElement.classList.remove("under-drag");
-            listElement.classList.add("remove-drag");
-            listElement.classList.add("mt-3");
-
-            listElementRight.style.pointerEvents = "auto";
-            listTitle.style.pointerEvents = "auto";
-            dragHandle.style.pointerEvents = "auto";
-            editInput.style.pointerEvents = "auto";
-            editButton.style.pointerEvents = "auto";
-            removeButton.style.pointerEvents = "auto";
-
-            setTimeout(() => {
-                listElement.classList.remove("remove-drag");
-            }, 250);
-        }
-
-        function addHoverClass() {
-            listElement.classList.add("under-drag")
-            listElement.classList.remove("mt-3");
-
-            listElementRight.style.pointerEvents = "none";
-            listTitle.style.pointerEvents = "none";
-            dragHandle.style.pointerEvents = "none";
-            editInput.style.pointerEvents = "none";
-            editButton.style.pointerEvents = "none";
-            removeButton.style.pointerEvents = "none";
-        }
+        // switch selected list
+        listElement.addEventListener("click", () => {
+            if (taskLists[listTrackingData.currentListIndex] !== list) {
+                listTrackingData.currentListIndex = listElement.getAttribute("index");
+                updateContainers();
+            }
+        });
 
         function moveList(fromIndex, toIndex) {
-            // Make sure we're not trying to move the list to itself
+            // convert to numbers, just in case
             fromIndex = Number(fromIndex);
             toIndex = Number(toIndex);
 
+            // don't move it if it's wonky
             if (toIndex < 0) { return; }
             if (fromIndex === toIndex) return;
 
             const listToMove = taskLists.splice(fromIndex, 1)[0];
 
-            if (fromIndex > toIndex) {
-                // move the list up on the page
-                taskLists.splice(toIndex, 0, listToMove);
-            }
+            // move it
+            taskLists.splice(toIndex, 0, listToMove);
 
-            if (fromIndex < toIndex) {
-                // move the list down on the page
-                taskLists.splice(toIndex - 1, 0, listToMove);
-            }
-
-
+            listTrackingData.currentListIndex = toIndex;
         }
-
-
-        listElement.addHoverClass = function () {
-            addHoverClass();
-        }
-        listElement.removeHoverClass = function () {
-            removeHoverClass();
-        }
-
-        listElement.addEventListener("dragenter", (event) => {
-            event.preventDefault();
-            if (draggingData.currentDragItem !== list) {
-                addHoverClass();
-            }
-        });
-
-        listElement.addEventListener("dragleave", (event) => {
-            event.preventDefault();
-            if (draggingData.currentDragItem !== list) {
-                removeHoverClass();
-            }
-        });
-
-        listElement.addEventListener("dragend", (event) => {
-            event.preventDefault();
-            removeHoverClass();
-            listElement.classList.remove("drag-placeholder");
-        })
-
-        listElement.addEventListener("dragover", (event) => {
-            event.preventDefault();
-        })
-
-        listElement.addEventListener("drop", (event) => {
-            event.preventDefault();
-
-            let x = event.clientX;
-            let y = event.clientY;
-
-            const hoveredElement = document.elementFromPoint(x, y);
-
-            if (hoveredElement !== draggingData.currentDragElement) {
-                const hoveredIndex = hoveredElement.getAttribute("body-index") ?? hoveredElement.getAttribute("index");
-                if (hoveredIndex !== null) {
-                    // Perform the move operation using your function
-                    moveList(draggingData.currentDragElement.getAttribute("body-index"), hoveredIndex);
-                    updateContainers(); // Update the UI after moving
-                }
-            }
-            removeHoverClass();
-        });
 
         const dragHandle = createDragHandle();
 
-        // Common function to handle the drag logic
-        function handleDrag(event, isTouch = false) {
-            if (isTouch) {
-                // Get the touch point
-                const touch = event.touches[0];
-                event.clientX = touch.clientX;
-                event.clientY = touch.clientY;
-            }
 
-            // Set the drag image position
-            if (draggingData.currentDragItem !== null) {
-                const rect = draggingData.currentDragElement.getBoundingClientRect();
-                draggingData.currentDragImage.style.top = `${event.clientY + 10}px`;
-                draggingData.currentDragImage.style.left = `${rect.left}px`;
-            }
-        }
-
-        dragHandle.addEventListener("dragstart", (event) => {
-            draggingData.currentDragItem = list;
-            draggingData.currentDragElement = listElement;
-
-            html2canvas(listElement).then((canvas) => {
-                const dragImage = canvas;
-                canvas.style.pointerEvents = "none";
-                draggingData.currentDragImage.innerHTML = "";
-                draggingData.currentDragImage.style.display = "block";
-                draggingData.currentDragImage.appendChild(dragImage);
-                listElement.classList.add("drag-placeholder");
-
-            }).catch((error) => {
-                console.error('Error generating drag image:', error);
-            });
-        });
-
-        dragHandle.addEventListener("drag", (event) => {
-            handleDrag(event);
-        });
-
-        dragHandle.addEventListener("dragend", (event) => {
-            draggingData.currentDragItem = null;
-            draggingData.currentDragElement = null;
-            draggingData.currentDragImage.style.display = "none"
-        });
-
-        // Touch events for mobile support
-        dragHandle.addEventListener("touchstart", (event) => {
-            event.preventDefault(); // Prevent scrolling
-            draggingData.currentDragItem = list; // Set the current drag item
-            draggingData.currentDragElement = listElement;
-
-            html2canvas(listElement).then((canvas) => {
-                const dragImage = canvas;
-                draggingData.currentDragImage.innerHTML = "";
-                draggingData.currentDragImage.style.display = "block";
-                draggingData.currentDragImage.appendChild(dragImage);
-                listElement.classList.add("drag-placeholder");
-            }).catch((error) => {
-                console.error('Error generating drag image:', error);
-            });
-        });
-
-        dragHandle.addEventListener("touchmove", (event) => {
-            handleDrag(event, true); // Handle touch drag
-        });
+        dragHandle.addEventListener("dragstart", (event) => handleDragStart(event, false, list, listElement));
+        dragHandle.addEventListener("drag", (event) => handleDrag(event, false, "list", taskLists));
+        dragHandle.addEventListener("dragend", (event) => handleDragEnd(event, false, "list", moveList, taskLists));
 
 
-        dragHandle.addEventListener("touchend", (event) => {
-            event.preventDefault();
-
-            // Simulate a "drop" action
-            let touch = event.changedTouches[0];
-            let x = touch.clientX;
-            let y = touch.clientY;
-
-            const hoveredElement = document.elementFromPoint(x, y);
-
-            if (hoveredElement !== draggingData.currentDragElement) {
-                const hoveredIndex = hoveredElement.getAttribute("body-index") ?? hoveredElement.getAttribute("index");
-                if (hoveredIndex !== null) {
-                    // Perform the move operation using your function
-                    moveList(draggingData.currentDragElement.getAttribute("body-index"), hoveredIndex);
-                    updateContainers(); // Update the UI after moving
-                }
-            }
-
-            for (let i = 0; i < taskLists.length; i++) {
-                const element = document.getElementById(`list-body-${i}`);
-                element.removeHoverClass();
-                element.classList.remove("drag-placeholder");
-            }
-            draggingData.currentDragItem = null;
-            draggingData.currentDragElement = null;
-            draggingData.currentDragImage.style.display = "none"; // Hide the drag image
-        });
-
+        // make dragging work on mobile
+        dragHandle.addEventListener("touchstart", (event) => handleDragStart(event, true, list, listElement));
+        dragHandle.addEventListener("touchmove", (event) => handleDrag(event, true, "list", taskLists));
+        dragHandle.addEventListener("touchend", (event) => handleDragEnd(event, true, "list", moveList, taskLists));
 
 
         const editInput = document.createElement("input");
-        editInput.addEventListener("keydown", (event) => { // simulate clicking on the save button
+
+        // simulate clicking on the save button when pressing enter
+        editInput.addEventListener("keydown", (event) => {
             if (event.key === "Enter") {
                 editButton.click();
             }
@@ -415,8 +388,6 @@ function updateContainers() {
         const removeButton = createRemoveButton((event) => {
             event.stopPropagation(); // prevent switching to this list
             removeListWithAnimation(list);
-            // removeList(list);
-            // updateContainers();
         });
 
 
@@ -429,9 +400,7 @@ function updateContainers() {
 
             editInput.style.display = "none";
             editInput.value = list.name;
-            editInput.style.width = "100%"
-
-            dragHandle.classList.add("bi", "bi-grip-vertical", "fs-2");
+            editInput.style.width = "100%";
 
             listTitle.textContent = list.name;
             listTitle.style.textDecoration = list.done ? "line-through" : "none";
@@ -444,10 +413,10 @@ function updateContainers() {
             listElementRight.classList.add(
                 "d-flex", "align-items-center"
             )
-            listElement.style.transition = ".25s";
+            listElement.style.transition = "0.25s";
 
             if (taskLists[listTrackingData.currentListIndex] === list) {
-                listElement.style.filter = "brightness(1.4)";
+                listElement.style.filter = `brightness(${defaultBrightness})`;
                 editButton.style.display = "inline-block";
             }
 
@@ -461,17 +430,12 @@ function updateContainers() {
         addStyling();
 
 
-        listElement.onclick = () => {
-            if (taskLists[listTrackingData.currentListIndex] !== list) {
-                listTrackingData.currentListIndex = taskLists.indexOf(list);
-                updateContainers();
-            }
-        };
 
-        let index = taskLists.indexOf(list); // identifier for mobile stuff
 
-        listElement.id = `list-body-${index}`;
-        listElement.setAttribute("body-index", index);
+        // identification for the parent element
+        listElement.id = `list-${index}`;
+
+        listElement.setAttribute("index", index);
         listElementRight.setAttribute("index", index);
         listElementRight.setAttribute("index", index);
         listTitle.setAttribute("index", index);
@@ -490,6 +454,9 @@ function updateContainers() {
         listElement.appendChild(listElementRight);
 
         listContainer.appendChild(listElement);
+
+        index++; // increment index
+
     }
 
     // display tasks to page
@@ -722,16 +689,6 @@ function updateContainers() {
                 event.preventDefault(); // Prevent scrolling
                 draggingData.currentDragItem = task; // Set the current drag item
                 draggingData.currentDragElement = taskElement;
-
-                html2canvas(taskElement).then((canvas) => {
-                    const dragImage = canvas;
-                    draggingData.currentDragImage.innerHTML = "";
-                    draggingData.currentDragImage.style.display = "block";
-                    draggingData.currentDragImage.appendChild(dragImage);
-                    taskElement.classList.add("drag-placeholder");
-                }).catch((error) => {
-                    console.error('Error generating drag image:', error);
-                });
             });
 
             dragHandle.addEventListener("touchmove", (event) => {
@@ -760,8 +717,8 @@ function updateContainers() {
 
                 for (let i = 0; i < taskLists[listTrackingData.currentListIndex].tasks.length; i++) {
                     const element = document.getElementById(`task-${i}`);
-                    element.removeHoverClass();
-                    element.classList.remove("drag-placeholder");
+                    // element.removeHoverClass();
+                    // element.classList.remove("drag-placeholder");
                 }
                 draggingData.currentDragItem = null;
                 draggingData.currentDragElement = null;
@@ -803,6 +760,8 @@ function updateContainers() {
             taskContainer.appendChild(taskElement);
         };
     }
+
+
 
     localStorage.setItem("userList", JSON.stringify(taskLists));
 }
