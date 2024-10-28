@@ -32,8 +32,7 @@ import {
     // variables
     taskLists,
     draggingData,
-    listTrackingData,
-    mt_3Height
+    listTrackingData
 } from "./globalVars.js";
 
 import {

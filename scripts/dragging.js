@@ -1,5 +1,8 @@
 "use strict";
-
+import {
+    // variable
+    mt_3Height
+} from "./globalVars.js";
 
 function convertTouchToXY(event) {
     const touch = event.touches[0];
