@@ -1,7 +1,8 @@
 "use strict";
 import {
-    // variable
-    mt_3Height
+    // variables
+    mt_3Height,
+    draggingData
 } from "./globalVars.js";
 
 function convertTouchToXY(event) {
@@ -133,7 +134,6 @@ export function handleDragEnd(event, isTouch = false, dataType, dataMoveFunction
     }
 
     const hoveredElement = document.elementFromPoint(x, y);
-    const hoveredIndex = hoveredElement.getAttribute("index");
 
     // fix styling of the elements
     for (let i = 0; i < list.length; i++) {
@@ -153,6 +153,7 @@ export function handleDragEnd(event, isTouch = false, dataType, dataMoveFunction
         draggingData.currentDragItem = null;
         draggingData.currentDragElement = null;
 
-        updateContainers();
+        return true; // updateContainers();
     }
+    return false;
 }

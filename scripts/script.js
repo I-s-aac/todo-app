@@ -169,13 +169,19 @@ function updateContainers() {
 
         dragHandle.addEventListener("dragstart", (event) => handleDragStart(event, false, list, listElement, "list"));
         dragHandle.addEventListener("drag", (event) => handleDrag(event, false, "list", taskLists));
-        dragHandle.addEventListener("dragend", (event) => handleDragEnd(event, false, "list", moveList, taskLists));
+        dragHandle.addEventListener("dragend", (event) => {
+            const condition = handleDragEnd(event, false, "list", moveList, taskLists);
+            if (condition) updateContainers();
+        });
 
 
         // make dragging work on mobile
         dragHandle.addEventListener("touchstart", (event) => handleDragStart(event, true, list, listElement, "list"));
         dragHandle.addEventListener("touchmove", (event) => handleDrag(event, true, "list", taskLists));
-        dragHandle.addEventListener("touchend", (event) => handleDragEnd(event, true, "list", moveList, taskLists));
+        dragHandle.addEventListener("touchend", (event) => {
+            const condition = handleDragEnd(event, true, "list", moveList, taskLists);
+            if (condition) updateContainers();
+        });
 
 
         const editInput = document.createElement("input");
@@ -403,7 +409,10 @@ function updateContainers() {
             );
             dragHandle.addEventListener(
                 "dragend",
-                (event) => handleDragEnd(event, false, "task", moveTask, taskLists[listTrackingData.currentListIndex].tasks)
+                (event) => {
+                    const condition = handleDragEnd(event, false, "task", moveTask, taskLists[listTrackingData.currentListIndex].tasks)
+                    if (condition) updateContainers();
+                }
             );
 
 
@@ -418,7 +427,10 @@ function updateContainers() {
             );
             dragHandle.addEventListener(
                 "touchend",
-                (event) => handleDragEnd(event, true, "task", moveTask, taskLists[listTrackingData.currentListIndex].tasks)
+                (event) => {
+                    const condition = handleDragEnd(event, true, "task", moveTask, taskLists[listTrackingData.currentListIndex].tasks)
+                    if (condition) updateContainers();
+                }
             );
 
 
