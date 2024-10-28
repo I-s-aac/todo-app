@@ -32,7 +32,8 @@ import {
     // variables
     taskLists,
     draggingData,
-    listTrackingData
+    listTrackingData,
+    mt_3Height
 } from "./globalVars.js";
 
 import {
@@ -109,13 +110,12 @@ function removeListWithAnimation(list) {
 }
 
 
-
 function convertTouchToXY(event) {
     const touch = event.touches[0];
     return [touch?.clientX ?? 0, touch?.clientY ?? 0]
 }
 
-function handleDragStart(event, isTouch = false, currentDragItem, currentDragElement) {
+function handleDragStart(event, isTouch = false, currentDragItem, currentDragElement, dragType) {
 
     let x = event.clientX;
     let y = event.clientY;
@@ -124,6 +124,7 @@ function handleDragStart(event, isTouch = false, currentDragItem, currentDragEle
 
     draggingData.currentDragItem = currentDragItem;
     draggingData.currentDragElement = currentDragElement;
+    draggingData.currentDragType = dragType;
 
     draggingData.currentDragElement.style.position = "relative";
     draggingData.currentDragElement.style.zIndex = 999;
@@ -145,14 +146,13 @@ function handleDragStart(event, isTouch = false, currentDragItem, currentDragEle
     event.dataTransfer.setDragImage(transparentImage, 0, 0);
 }
 
-let sizeSet = false;
-function handleDrag(event, isTouch = false, dataType, list) {
+async function handleDrag(event, isTouch = false, dataType, list) {
     if (draggingData.currentDragItem !== null && draggingData.currentDragElement !== null) {
 
         let x = event.clientX;
         let y = event.clientY;
 
-        if (isTouch) [x, y] = convertTouchToXY(event);
+        if (isTouch) { [x, y] = convertTouchToXY(event); event.preventDefault(); }
 
 
         draggingData.currentDragElement.style.transition = "transform 0.0s";
@@ -165,105 +165,71 @@ function handleDrag(event, isTouch = false, dataType, list) {
 
 
         if (hoveredIndex !== null) {
-            // make sure we're modifiying the whole element
-            hoveredElement = document.getElementById(`${dataType}-${hoveredIndex}`);
 
-            function clear(element) {
-                element.classList.remove("shift-up", "shift-down");
-            }
             function up(element) {
+
+                // element.setAttribute(key, "false");
                 element.classList.add("shift-up");
                 element.classList.remove("shift-down");
+
             }
             function down(element) {
+
+                // element.setAttribute(key, "false");
                 element.classList.add("shift-down");
                 element.classList.remove("shift-up");
+
+            }
+            function clear(element) {
+
+                // element.setAttribute(key, "false");
+                element.classList.remove("shift-up", "shift-down");
+
             }
 
-            if (!sizeSet) {
-                sizeSet = true;
-                let style = window.getComputedStyle(hoveredElement);
-                let height = parseFloat(hoveredElement.offsetHeight) + parseFloat(style.marginTop) + parseFloat(style.marginBottom);
-                document.documentElement.style.setProperty("--dynamic-height", `${height}px`);
-            }
-            console.log(draggingData.currentVisualIndex, hoveredIndex);
+            hoveredElement = document.getElementById(`${dataType}-${hoveredIndex}`);
+
+
+            let height = hoveredElement.offsetHeight + mt_3Height; // current class for margin
+            document.documentElement.style.setProperty("--dynamic-height", `${height}px`);
+
 
             const hoverContainsUp = hoveredElement.classList.contains("shift-up");
             const hoverContainsDown = hoveredElement.classList.contains("shift-down");
+            const doingAnimation = hoveredElement.getAttribute("doingAnimation") === "true";
 
-            if (draggingData.currentVisualIndex === hoveredIndex - 1) {
+            if (draggingData.currentVisualIndex === hoveredIndex - 1 && !doingAnimation) {
+
                 up(hoveredElement);
-            } else if (draggingData.currentVisualIndex === hoveredIndex + 1) {
+                draggingData.currentVisualIndex += 1;
+
+            } else if (draggingData.currentVisualIndex === hoveredIndex + 1 && !doingAnimation) {
+
                 down(hoveredElement);
-            } else {
-                setTimeout(() => {
-                    if (draggingData.currentVisualIndex === hoveredIndex && hoverContainsUp) {
-                        clear(hoveredElement);
-                        console.log("test", draggingData.currentVisualIndex, hoveredIndex);
-                    }
-                }, 1000);
+                draggingData.currentVisualIndex -= 1;
+
+            } else if (
+                draggingData.currentVisualIndex === hoveredIndex &&
+                !doingAnimation &&
+                (hoverContainsDown || hoverContainsUp)
+            ) {
+                if (hoverContainsUp) {
+
+                    clear(hoveredElement);
+                    draggingData.currentVisualIndex -= 1;
+
+                } else if (hoverContainsDown) {
+
+                    clear(hoveredElement);
+                    draggingData.currentVisualIndex += 1;
+
+                }
             }
-
-            draggingData.currentVisualIndex = hoveredIndex;
-
         }
     }
 }
 
 
-
-/* 
-// function handleDrag(event, isTouch = false, dataType, list) {
-//     if (draggingData.currentDragItem !== null && draggingData.currentDragElement !== null) {
-
-//         let x = event.clientX;
-//         let y = event.clientY;
-
-//         if (isTouch) [x, y] = convertTouchToXY(event);
-
-
-//         draggingData.currentDragElement.style.transition = "transform 0.0s";
-//         draggingData.currentDragElement.style.transform =
-//             `translate(${x - draggingData.offsetX + 5}px, ${y - draggingData.offsetY}px)`;
-
-//         const hoveredElement = document.elementFromPoint(x, y);
-//         const hoveredIndex = hoveredElement.getAttribute("index");
-//         const dragElementIndex = draggingData.currentDragElement.getAttribute("index");
-
-
-//         if (hoveredIndex !== null) {
-//             const diff = Number(draggingData.currentVisualIndex) - Number(dragElementIndex);
-//             draggingData.currentVisualIndex = hoveredIndex;
-
-
-
-//             function up(element) {
-//                 element.classList.add("shift-up");
-//                 element.classList.remove("shift-down");
-//             }
-//             function down(element) {
-//                 element.classList.add("shift-down");
-//                 element.classList.remove("shift-up");
-//             }
-//             console.log(diff, "diff")
-
-//             let style = window.getComputedStyle(hoveredElement);
-//             let height = parseFloat(hoveredElement.offsetHeight) + parseFloat(style.marginTop) + parseFloat(style.marginBottom);
-//             document.documentElement.style.setProperty("--dynamic-height", `${height}px`);
-
-//             for (let i = 0; i < list.length; i++) {
-//                 if (i === dragElementIndex) continue;
-
-//                 const element = document.getElementById(`${dataType}-${i}`);
-
-
-
-
-//             }
-//         }
-//     }
-// }
- */
 function handleDragEnd(event, isTouch = false, dataType, dataMoveFunction, list) {
 
     let x = event.clientX;
@@ -339,16 +305,25 @@ function updateContainers() {
             listTrackingData.currentListIndex = toIndex;
         }
 
+        listElement.addEventListener("transitionstart", () => {
+            listElement.setAttribute("doingAnimation", "true");
+        });
+        listElement.addEventListener("transitionend", () => {
+            listElement.setAttribute("doingAnimation", "false");
+        });
+        listElement.addEventListener("transitioncancel", () => {
+            listElement.setAttribute("doingAnimation", "false");
+        });
+
         const dragHandle = createDragHandle();
 
-
-        dragHandle.addEventListener("dragstart", (event) => handleDragStart(event, false, list, listElement));
+        dragHandle.addEventListener("dragstart", (event) => handleDragStart(event, false, list, listElement, "list"));
         dragHandle.addEventListener("drag", (event) => handleDrag(event, false, "list", taskLists));
         dragHandle.addEventListener("dragend", (event) => handleDragEnd(event, false, "list", moveList, taskLists));
 
 
         // make dragging work on mobile
-        dragHandle.addEventListener("touchstart", (event) => handleDragStart(event, true, list, listElement));
+        dragHandle.addEventListener("touchstart", (event) => handleDragStart(event, true, list, listElement, "list"));
         dragHandle.addEventListener("touchmove", (event) => handleDrag(event, true, "list", taskLists));
         dragHandle.addEventListener("touchend", (event) => handleDragEnd(event, true, "list", moveList, taskLists));
 
@@ -416,15 +391,21 @@ function updateContainers() {
             listElement.style.transition = "0.25s";
 
             if (taskLists[listTrackingData.currentListIndex] === list) {
-                listElement.style.filter = `brightness(${defaultBrightness})`;
-                editButton.style.display = "inline-block";
+                if (draggingData.currentDragItem === null && draggingData.currentDragElement === null) {
+                    listElement.style.filter = `brightness(${defaultBrightness})`;
+                    editButton.style.display = "inline-block";
+                }
             }
 
             listElement.onmouseenter = () => {
-                listElement.style.filter = `brightness(${hoverBrightness})`;
+                if (draggingData.currentDragItem === null && draggingData.currentDragElement === null) {
+                    listElement.style.filter = `brightness(${hoverBrightness})`;
+                }
             }
             listElement.onmouseleave = () => {
-                listElement.style.filter = `brightness(${defaultBrightness})`;
+                if (draggingData.currentDragItem === null && draggingData.currentDragElement === null) {
+                    listElement.style.filter = `brightness(${defaultBrightness})`;
+                }
             }
         }
         addStyling();
@@ -467,18 +448,51 @@ function updateContainers() {
             const index = i;
 
             const taskElement = document.createElement("div");
-            const taskText = document.createElement("span");
+            const taskText = document.createElement("div");
+
+            taskElement.addEventListener("transitionstart", () => {
+                taskElement.setAttribute("doingAnimation", "true");
+            });
+            taskElement.addEventListener("transitionend", () => {
+                taskElement.setAttribute("doingAnimation", "false");
+            });
+            taskElement.addEventListener("transitioncancel", () => {
+                taskElement.setAttribute("doingAnimation", "false");
+            });
 
             taskElement.setAttribute("index", index);
             taskElement.id = `task-${index}`;
 
             taskText.textContent = task.content;
             taskText.style.textDecoration = task.done ? "line-through" : "none";
+            taskText.classList.add("text-wrap");
+            taskText.style.width = "90%";
+            taskText.style.overflowWrap = "break-word";
+            taskText.style.wordBreak = "break-all";
 
             taskElement.classList.add("mt-3", "rounded");
             taskElement.style.width = "100%";
             taskElement.style.backgroundColor = "#c6c6c6";
             taskElement.style.transitionDuration = "0.25s";
+
+            function moveTask(fromIndex, toIndex) {
+                fromIndex = Number(fromIndex);
+                toIndex = Number(toIndex);
+
+                if (toIndex < 0) { return; }
+                if (fromIndex === toIndex) return;
+
+                // Remove the item from its current position
+                const taskToMove = taskLists[listTrackingData.currentListIndex].tasks.splice(fromIndex, 1)[0];
+                taskLists[listTrackingData.currentListIndex].tasks.splice(toIndex, 0, taskToMove);
+
+                // if (fromIndex > toIndex) {
+                //     // move the task up on the page
+                // } else {
+                //     // move the task down on the page
+                //     taskLists[listTrackingData.currentListIndex].tasks.splice(toIndex - 1, 0, taskToMove);
+                // }
+            }
 
             const editInput = document.createElement("textarea");
             editInput.style.display = "none";
@@ -522,208 +536,40 @@ function updateContainers() {
 
             const removeButton = createRemoveButton();
             removeButton.onclick = () => {
-                // removeTask(index);
                 removeTaskWithAnimation(index);
-                // updateContainers();
             };
-
-
-            function removeHoverClass() {
-                taskElement.classList.remove("under-drag");
-                taskElement.classList.add("remove-drag");
-                taskElement.classList.add("mt-3");
-
-                taskText.style.pointerEvents = "auto";
-                dragHandle.style.pointerEvents = "auto";
-                editInput.style.pointerEvents = "auto";
-                editButton.style.pointerEvents = "auto";
-                removeButton.style.pointerEvents = "auto";
-
-                setTimeout(() => {
-                    taskElement.classList.remove("remove-drag");
-                }, 250);
-            }
-
-            function addHoverClass() {
-                taskElement.classList.add("under-drag")
-                taskElement.classList.remove("mt-3");
-
-                taskText.style.pointerEvents = "none";
-                dragHandle.style.pointerEvents = "none";
-                editInput.style.pointerEvents = "none";
-                editButton.style.pointerEvents = "none";
-                removeButton.style.pointerEvents = "none";
-            }
-
-            function moveTask(fromIndex, toIndex) {
-                fromIndex = Number(fromIndex);
-                toIndex = Number(toIndex);
-
-                if (toIndex < 0) { return; }
-                if (fromIndex === toIndex) return;
-
-                // Remove the item from its current position
-                const taskToMove = taskLists[listTrackingData.currentListIndex].tasks.splice(fromIndex, 1)[0];
-
-                if (fromIndex > toIndex) {
-                    // move the task up on the page
-                    taskLists[listTrackingData.currentListIndex].tasks.splice(toIndex, 0, taskToMove);
-                } else {
-                    // move the task down on the page
-                    taskLists[listTrackingData.currentListIndex].tasks.splice(toIndex - 1, 0, taskToMove);
-                }
-            }
-
-
-            taskElement.addHoverClass = function () {
-                addHoverClass();
-            }
-            taskElement.removeHoverClass = function () {
-                removeHoverClass();
-            }
-
-            taskElement.addEventListener("dragenter", (event) => {
-                event.preventDefault();
-                if (draggingData.currentDragItem !== task) {
-                    addHoverClass();
-                    draggingData.previousHoverIndex = taskElement.getAttribute("index");
-                }
-            });
-
-            taskElement.addEventListener("dragleave", (event) => {
-                event.preventDefault();
-                const hoveredIndex = document.elementFromPoint(event.clientX, event.clientY).getAttribute("index");
-                if (
-                    draggingData.currentDragItem !== task &&
-                    (
-                        draggingData.previousHoverIndex !== taskElement.getAttribute("index") ||
-                        hoveredIndex === null ||
-                        hoveredIndex === draggingData.currentDragElement.getAttribute("index")
-                    )
-                ) {
-                    removeHoverClass();
-
-                }
-            });
-
-            taskElement.addEventListener("dragend", (event) => {
-                event.preventDefault();
-                removeHoverClass();
-                taskElement.classList.remove("drag-placeholder");
-            })
-
-            taskElement.addEventListener("dragover", (event) => {
-                event.preventDefault();
-            })
-
-            taskElement.addEventListener("drop", (event) => {
-                event.preventDefault();
-
-                let x = event.clientX;
-                let y = event.clientY;
-
-                const hoveredElement = document.elementFromPoint(x, y);
-
-                if (hoveredElement !== draggingData.currentDragElement) {
-                    const hoveredIndex = hoveredElement.getAttribute("index");
-                    if (hoveredIndex !== null) {
-                        // Perform the move operation using your function
-                        moveTask(draggingData.currentDragElement.getAttribute("index"), hoveredIndex);
-                        updateContainers(); // Update the UI after moving
-                    }
-                }
-                removeHoverClass();
-            });
-
-
 
 
             const dragHandle = createDragHandle();
 
-            // Common function to handle the drag logic
-            function handleDrag(event, isTouch = false) {
-                if (isTouch) {
-                    // Get the touch point
-                    const touch = event.touches[0];
-                    event.clientX = touch.clientX;
-                    event.clientY = touch.clientY;
-                }
 
-                // Set the drag image position
-                if (draggingData.currentDragItem !== null) {
-                    const rect = draggingData.currentDragElement.getBoundingClientRect();
-                    draggingData.currentDragImage.style.top = `${event.clientY + 20}px`;
-                    draggingData.currentDragImage.style.left = `${rect.left}px`;
-                }
-            }
-
-            dragHandle.addEventListener("dragstart", (event) => {
-                draggingData.currentDragItem = task;
-                draggingData.currentDragElement = taskElement;
-
-                html2canvas(taskElement).then((canvas) => {
-                    const dragImage = canvas;
-                    canvas.style.pointerEvents = "none";
-                    draggingData.currentDragImage.innerHTML = "";
-                    draggingData.currentDragImage.style.display = "block";
-                    draggingData.currentDragImage.appendChild(dragImage);
-                    taskElement.classList.add("drag-placeholder");
-
-                }).catch((error) => {
-                    console.error('Error generating drag image:', error);
-                });
-            });
-
-            dragHandle.addEventListener("drag", (event) => {
-                handleDrag(event);
-            });
-
-            dragHandle.addEventListener("dragend", (event) => {
-                draggingData.currentDragItem = null;
-                draggingData.currentDragElement = null;
-                draggingData.currentDragImage.style.display = "none"
-            });
-
-            // Touch events for mobile support
-            dragHandle.addEventListener("touchstart", (event) => {
-                event.preventDefault(); // Prevent scrolling
-                draggingData.currentDragItem = task; // Set the current drag item
-                draggingData.currentDragElement = taskElement;
-            });
-
-            dragHandle.addEventListener("touchmove", (event) => {
-                handleDrag(event, true); // Handle touch drag
-            });
+            dragHandle.addEventListener(
+                "dragstart",
+                (event) => handleDragStart(event, false, task, taskElement, "task")
+            );
+            dragHandle.addEventListener(
+                "drag",
+                (event) => handleDrag(event, false, "task", taskLists[listTrackingData.currentListIndex].tasks)
+            );
+            dragHandle.addEventListener(
+                "dragend",
+                (event) => handleDragEnd(event, false, "task", moveTask, taskLists[listTrackingData.currentListIndex].tasks)
+            );
 
 
-            dragHandle.addEventListener("touchend", (event) => {
-                event.preventDefault();
-
-                // Simulate a "drop" action
-                let touch = event.changedTouches[0];
-                let x = touch.clientX;
-                let y = touch.clientY;
-
-                const hoveredElement = document.elementFromPoint(x, y);
-
-                if (hoveredElement !== draggingData.currentDragElement) {
-                    const hoveredIndex = hoveredElement.getAttribute("index");
-                    if (hoveredIndex !== null) {
-                        // Perform the move operation using your function
-                        moveTask(draggingData.currentDragElement.getAttribute("index"), hoveredIndex);
-                        updateContainers(); // Update the UI after moving
-                    }
-                }
-
-                for (let i = 0; i < taskLists[listTrackingData.currentListIndex].tasks.length; i++) {
-                    const element = document.getElementById(`task-${i}`);
-                    // element.removeHoverClass();
-                    // element.classList.remove("drag-placeholder");
-                }
-                draggingData.currentDragItem = null;
-                draggingData.currentDragElement = null;
-                draggingData.currentDragImage.style.display = "none"; // Hide the drag image
-            });
+            // make dragging work on mobile
+            dragHandle.addEventListener(
+                "touchstart",
+                (event) => handleDragStart(event, true, task, taskElement, "task")
+            );
+            dragHandle.addEventListener(
+                "touchmove",
+                (event) => handleDrag(event, true, "task", taskLists[listTrackingData.currentListIndex].tasks)
+            );
+            dragHandle.addEventListener(
+                "touchend",
+                (event) => handleDragEnd(event, true, "task", moveTask, taskLists[listTrackingData.currentListIndex].tasks)
+            );
 
 
 
